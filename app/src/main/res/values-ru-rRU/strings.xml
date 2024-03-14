@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HabitsTracker</string>
+    <string name="fab_desc">Кнопка для добавления привычки</string>
+    <string name="cp_desc">Выбор цвета для привычке</string>
+    <string name="hint_habit_name">Название</string>
+    <string name="hint_habit_desc">Описание</string>
+    <string name="hint_amount">Количество</string>
+    <string name="hint_frequency">Периодичность</string>
+    <string name="btn_name_close">Закрыть</string>
+    <string name="btn_name_save">Сохранить</string>
+    <string name="type">Тип:</string>
+    <string name="r_btn_good">Хорошая</string>
+    <string name="r_btn_bad">Плохая</string>
+    <string name="priority">Приоритет:</string>
+    <string name="current_color">Текущий цвет</string>
+    <string-array name="habit_priority">
+        <item>Не выбрано</item>
+        <item>Важная</item>
+        <item>Не важная</item>
+    </string-array>
+    <string name="def_name">привычка</string>
+    <string name="def_desc">Не очень важная хорошая привычка</string>
+    <string name="def_Frequency">День</string>
+    <string name="def_Type">Не выбрано</string>
+</resources>

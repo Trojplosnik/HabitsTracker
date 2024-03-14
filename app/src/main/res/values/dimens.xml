@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="def_margin">16dp</dimen>
+    <dimen name="def_text_size">16sp</dimen>
+    <dimen name="large_text_size">32sp</dimen>
+    <dimen name="et_height">56dp</dimen>
+    <dimen name="def_padding">16dp</dimen>
+    <dimen name="btn_height">64dp</dimen>
+    <dimen name="v_color_size">64dp</dimen>
+    <dimen name="def_corner_radius">8dp</dimen>
+</resources>
