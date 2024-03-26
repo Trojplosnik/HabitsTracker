@@ -23,5 +23,6 @@
     <string name="def_desc">An unimportant good habit</string>
     <string name="def_Frequency">Day</string>
     <string name="def_Type">Not selected</string>
+    <string name="toast_fill_fields">To save the habit, fill in all required fields</string>
 
 </resources>

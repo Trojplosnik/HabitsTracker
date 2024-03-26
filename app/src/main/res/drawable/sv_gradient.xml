@@ -4,8 +4,7 @@
         android:type="linear"
         android:startColor = "@color/light_green"
         android:centerColor="@color/green"
-        android:endColor = "@color/deep_blue"
+        android:endColor = "@color/azure"
         >
     </gradient>
-
 </shape>

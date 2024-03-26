@@ -1,6 +1,7 @@
 package com.example.habitstracker
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -22,13 +23,21 @@ class MainActivity : AppCompatActivity(), IHabitActionListener {
 
     private var editHabitPosition = 0
 
+    @Suppress("DEPRECATION")
     private val editAddLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Constants.ADD_HABIT) {
-                adapter.addHabit(it.data?.getSerializableExtra("habit") as Habit)
+            if (it.resultCode == Constants.RESULT_CODE_ADD_HABIT) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    adapter.addHabit(it.data?.getSerializableExtra(Constants.KEY_EXTRA_ADD_HABIT, Habit::class.java) ?: Habit())
+                }
+                else  adapter.addHabit(it.data?.getSerializableExtra(Constants.KEY_EXTRA_ADD_HABIT) as Habit)
             }
-            else if (it.resultCode == Constants.EDIT_HABIT) {
-                adapter.editHabit(it.data?.getSerializableExtra("habit") as Habit,
+            else if (it.resultCode == Constants.RESULT_CODE_EDIT_HABIT) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    adapter.editHabit(it.data?.getSerializableExtra(Constants.KEY_EXTRA_ADD_HABIT,
+                        Habit::class.java) ?: Habit(), editHabitPosition)
+                }
+                else adapter.editHabit(it.data?.getSerializableExtra(Constants.KEY_EXTRA_ADD_HABIT) as Habit,
                     editHabitPosition)
             }
         }
@@ -80,7 +89,7 @@ class MainActivity : AppCompatActivity(), IHabitActionListener {
 
     override fun onClick(habit: Habit, position: Int) {
         editAddLauncher.launch(Intent(this@MainActivity,
-            EditAddActivity::class.java).putExtra("edit_habit", habit))
+            EditAddActivity::class.java).putExtra(Constants.KEY_EXTRA_EDIT_HABIT, habit))
         editHabitPosition = position
     }
 }

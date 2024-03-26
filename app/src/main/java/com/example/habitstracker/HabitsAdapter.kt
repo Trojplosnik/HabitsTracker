@@ -2,6 +2,8 @@ package com.example.habitstracker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.databinding.RvItemHabitBinding
 import java.util.Collections
@@ -10,7 +12,17 @@ import java.util.Collections
 class HabitsAdapter(
     private val habits: MutableList<Habit>,
     private val actionListener: IHabitActionListener
-) : RecyclerView.Adapter<HabitsAdapter.HabitsViewHolder>() {
+) : ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCallback) {
+
+    object ItemCallback: DiffUtil.ItemCallback<Habit>() {
+        override fun areItemsTheSame(oldItem: Habit, newItem: Habit): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: Habit, newItem: Habit): Boolean {
+            return oldItem == newItem
+        }
+    }
 
     class HabitsViewHolder(
         val binding: RvItemHabitBinding
@@ -21,6 +33,9 @@ class HabitsAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = RvItemHabitBinding.inflate(inflater, parent, false)
 
+
+
+
         return HabitsViewHolder(binding)
     }
 
@@ -29,11 +44,10 @@ class HabitsAdapter(
     override fun onBindViewHolder(holder: HabitsViewHolder, position: Int) {
         val habit = habits[position]
 
-        holder.itemView.setOnClickListener {
+        with(holder.binding) {
+            root.setOnClickListener {
             actionListener.onClick(habit, position)
         }
-
-        with(holder.binding) {
             with(habit) {
                 tvName.text = name
                 tvDescription.text = description

@@ -23,4 +23,5 @@
     <string name="def_desc">Не очень важная хорошая привычка</string>
     <string name="def_Frequency">День</string>
     <string name="def_Type">Не выбрано</string>
+    <string name="toast_fill_fields">Чтобы сохранить привычку, заполните все обязательные поля</string>
 </resources>

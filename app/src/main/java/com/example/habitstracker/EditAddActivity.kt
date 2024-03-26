@@ -2,17 +2,16 @@ package com.example.habitstracker
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.alpha
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
-
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.children
+import androidx.core.view.doOnLayout
 import com.example.habitstracker.databinding.ActivityAddEditBinding
-import kotlin.IllegalStateException
 
 
 class EditAddActivity : AppCompatActivity() {
@@ -23,17 +22,23 @@ class EditAddActivity : AppCompatActivity() {
 
     private var habit: Habit = Habit()
 
-    private var resultCode: Int = Constants.ADD_HABIT
-
+    private var resultCode: Int = Constants.RESULT_CODE_ADD_HABIT
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAddEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (intent.hasExtra("edit_habit")) {
-            resultCode = Constants.EDIT_HABIT
-            habit = intent?.getSerializableExtra("edit_habit") as? Habit ?: Habit()
+        checkIntentData()
+        init()
+    }
+
+    private fun checkIntentData() {
+        if (intent.hasExtra(Constants.KEY_EXTRA_EDIT_HABIT)) {
+            resultCode = Constants.RESULT_CODE_EDIT_HABIT
+            @Suppress("DEPRECATION")
+            habit =
+                intent?.getSerializableExtra(Constants.KEY_EXTRA_EDIT_HABIT) as? Habit ?: Habit()
             with(binding) {
                 with(habit) {
                     etHabitName.setText(name)
@@ -51,59 +56,91 @@ class EditAddActivity : AppCompatActivity() {
                 }
             }
         }
-
-        init()
     }
 
 
-    private fun init() {
+    private fun checkHabitIsEmpty() = with(binding) {
+        etHabitName.text.isEmpty() or
+                etAmount.text.isEmpty() or
+                etFrequency.text.isEmpty() or
+                (rGrpType.checkedRadioButtonId == -1)
+    }
+
+    private fun setColorPickerConfig()
+    {
         with(binding)
         {
-
-//            for (i in 0 until (linL?.childCount ?: 0)) {
-//                val child = linL?.getChildAt(i) ?: throw IllegalStateException("linL in sv")
-//                child.setOnClickListener {
-//                    val bitmap = Bitmap.createBitmap(it.width, it.height, Bitmap.Config.ARGB_8888)
-//                    val pixel = bitmap.getPixel(it.width / 2, it.height / 2)
-//                    val color = Color.argb(Color.alpha(pixel),Color.red(pixel), Color.green(pixel), Color.blue(pixel))
-//                    Log.d("MyLog", "$color")
-//                    cvCurrentColor.setCardBackgroundColor(color)
-//                }
-//            }
-
-
-
-
-            btnClose.setOnClickListener {
-                setResult(RESULT_CANCELED)
-                finish()
-            }
-
-
-            btnSave.setOnClickListener {
-
-                with(habit) {
-                    etHabitName.text.toString().takeIf { it.isNotEmpty() }?.let { name = it }
-                    etHabitDesc.text.toString().takeIf { it.isNotEmpty() }?.let { description = it }
-                    etAmount.text.toString().takeIf { it.isNotEmpty() }?.let { amount = it }
-                    etFrequency.text.toString().takeIf { it.isNotEmpty() }?.let { frequency = it }
-                    priority = spnHabitPriority.selectedItem.toString()
-                    type =
-                        if (rBtnBad.isChecked) rBtnBad.text.toString()
-                        else if (rBtnGood.isChecked) rBtnGood.text.toString()
-                        else "Not selected"
-                    color = Color.LTGRAY
-                }
-
-                setResult(
-                    resultCode, Intent(
-                        this@EditAddActivity,
-                        MainActivity::class.java
-                    )
-                        .putExtra("habit", habit)
+            linL?.doOnLayout { layout ->
+                val bitmap = layout.background.toBitmap(
+                    layout.measuredWidth,
+                    layout.measuredHeight, Bitmap.Config.ARGB_8888
                 )
-                finish()
+                linL.children.forEach { child ->
+                    child.setOnClickListener {
+                        val color = bitmap.getPixel(
+                            (it.x + it.width / 2).toInt(),
+                            (it.y + it.height / 2).toInt()
+                        )
+                        cvCurrentColor.setCardBackgroundColor(color)
+                    }
+                }
             }
+        }
+    }
+
+
+    private fun setSaveButtonConfig()
+    {
+        with(binding) {
+            btnSave.setOnClickListener {
+                if (checkHabitIsEmpty())
+                    Toast.makeText(
+                        this@EditAddActivity, R.string.toast_fill_fields,
+                        Toast.LENGTH_LONG
+                    ).show()
+                else {
+                    with(habit) {
+                        name = etHabitName.text.toString()
+                        description = etHabitDesc.text.toString()
+                        amount = etAmount.text.toString()
+                        frequency = etFrequency.text.toString()
+                        priority = spnHabitPriority.selectedItem.toString()
+                        type =
+                            if (rBtnBad.isChecked) rBtnBad.text.toString()
+                            else if (rBtnGood.isChecked) rBtnGood.text.toString()
+                            else "Not selected"
+                        color = cvCurrentColor.cardBackgroundColor.defaultColor
+                    }
+
+                    setResult(
+                        resultCode, Intent(
+                            this@EditAddActivity,
+                            MainActivity::class.java
+                        ).putExtra(Constants.KEY_EXTRA_ADD_HABIT, habit)
+                    )
+                    finish()
+                }
+            }
+        }
+    }
+
+
+    private fun View.hideKeyboard() {
+        val imm = ContextCompat.getSystemService(context, InputMethodManager::class.java) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    private fun init() {
+
+        setColorPickerConfig()
+        setSaveButtonConfig()
+        binding.btnClose.setOnClickListener {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
+        binding.root.setOnClickListener{
+            currentFocus?.clearFocus()
+            it.hideKeyboard()
         }
     }
 
