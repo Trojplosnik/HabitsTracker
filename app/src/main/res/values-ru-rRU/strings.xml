@@ -7,8 +7,9 @@
     <string name="hint_habit_desc">Описание</string>
     <string name="hint_amount">Количество</string>
     <string name="hint_frequency">Периодичность</string>
-    <string name="btn_name_close">Закрыть</string>
-    <string name="btn_name_save">Сохранить</string>
+    <string name="close">Закрыть</string>
+    <string name="open">Открыть</string>
+    <string name="save">Сохранить</string>
     <string name="type">Тип:</string>
     <string name="r_btn_good">Хорошая</string>
     <string name="r_btn_bad">Плохая</string>
@@ -19,9 +20,13 @@
         <item>Важная</item>
         <item>Не важная</item>
     </string-array>
-    <string name="def_name">привычка</string>
+    <string name="def_name">Привычка</string>
     <string name="def_desc">Не очень важная хорошая привычка</string>
     <string name="def_Frequency">День</string>
     <string name="def_Type">Не выбрано</string>
     <string name="toast_fill_fields">Чтобы сохранить привычку, заполните все обязательные поля</string>
+    <string name="menu">Меню</string>
+    <string name="habits">Привычки</string>
+    <string name="info">Информация</string>
+    <string name="info_content">Приложение, которое поможет вам отслеживать ваши привычки.</string>
 </resources>

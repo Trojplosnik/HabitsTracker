@@ -1,20 +1,28 @@
-package com.example.habitstracker
+package com.example.habitstracker.Adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.habitstracker.Habit
+import com.example.habitstracker.IHabitActionListener
 import com.example.habitstracker.databinding.RvItemHabitBinding
 import java.util.Collections
 
 
 class HabitsAdapter(
-    private val habits: MutableList<Habit>,
+    private val type: String,
+    private val _habits: MutableList<Habit>,
     private val actionListener: IHabitActionListener
 ) : ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCallback) {
 
-    object ItemCallback: DiffUtil.ItemCallback<Habit>() {
+
+    private val habits
+        get() = _habits.filter { it.type == type }
+
+
+    object ItemCallback : DiffUtil.ItemCallback<Habit>() {
         override fun areItemsTheSame(oldItem: Habit, newItem: Habit): Boolean {
             return oldItem == newItem
         }
@@ -29,11 +37,10 @@ class HabitsAdapter(
     ) : RecyclerView.ViewHolder(binding.root)
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = RvItemHabitBinding.inflate(inflater, parent, false)
-
-
 
 
         return HabitsViewHolder(binding)
@@ -44,10 +51,12 @@ class HabitsAdapter(
     override fun onBindViewHolder(holder: HabitsViewHolder, position: Int) {
         val habit = habits[position]
 
+
+
         with(holder.binding) {
             root.setOnClickListener {
-            actionListener.onClick(habit, position)
-        }
+                actionListener.onClick(habit)
+            }
             with(habit) {
                 tvName.text = name
                 tvDescription.text = description
@@ -62,23 +71,24 @@ class HabitsAdapter(
 
 
     fun addHabit(habit: Habit) {
-        habits.add(habit)
-        notifyItemInserted(habits.indexOf(habit))
+        _habits.add(habit)
+        notifyItemInserted(_habits.indexOf(habit))
     }
 
-    fun editHabit(habit: Habit, habitPos: Int) {
-        habits[habitPos] = habit
-        notifyItemChanged(habitPos)
+    fun editHabit(habit: Habit) {
+        _habits[_habits.indexOf(habit)] = habit
+        notifyItemChanged(_habits.indexOf(habit))
     }
 
-    fun swapHabits(firstHabitPos: Int, secondHabitPos: Int)
-    {
-        Collections.swap(habits, firstHabitPos, secondHabitPos)
-        notifyItemMoved(firstHabitPos,secondHabitPos)
+    fun swapHabits(firstHabitPos: Int, secondHabitPos: Int) {
+        val trueFirstHabitPos = habits.indexOf(habits[firstHabitPos])
+        val  trueSecondHabitPos = habits.indexOf(habits[secondHabitPos])
+        Collections.swap(habits, trueFirstHabitPos, trueSecondHabitPos)
+        notifyItemMoved(trueFirstHabitPos, trueSecondHabitPos)
     }
 
     fun removeHabit(habitPos: Int) {
-        habits.removeAt(habitPos)
-        notifyItemRemoved(habitPos)
+        _habits.remove(habits[habitPos])
+        notifyItemRemoved(habits.indexOf(habits[habitPos]))
     }
 }

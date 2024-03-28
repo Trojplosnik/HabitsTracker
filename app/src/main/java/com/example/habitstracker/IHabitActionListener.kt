@@ -1,5 +1,5 @@
 package com.example.habitstracker
 
 interface IHabitActionListener {
-    fun onClick(habit: Habit, position: Int)
+    fun onClick(habit: Habit)
 }

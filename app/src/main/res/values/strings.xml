@@ -6,8 +6,9 @@
     <string name="hint_habit_desc">Description</string>
     <string name="hint_amount">Amount</string>
     <string name="hint_frequency">Frequency</string>
-    <string name="btn_name_close">Close</string>
-    <string name="btn_name_save">Save</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+    <string name="save">Save</string>
     <string name="type">Type:</string>
     <string name="r_btn_good">Good</string>
     <string name="r_btn_bad">Bad</string>
@@ -24,5 +25,9 @@
     <string name="def_Frequency">Day</string>
     <string name="def_Type">Not selected</string>
     <string name="toast_fill_fields">To save the habit, fill in all required fields</string>
+    <string name="menu">Menu</string>
+    <string name="habits">Habits</string>
+    <string name="info">Info</string>
+    <string name="info_content">An application that helps you keep track of your habits.</string>
 
 </resources>
