@@ -10,8 +10,8 @@
     <string name="open">Open</string>
     <string name="save">Save</string>
     <string name="type">Type:</string>
-    <string name="r_btn_good">Good</string>
-    <string name="r_btn_bad">Bad</string>
+    <string name="good">Good</string>
+    <string name="bad">Bad</string>
     <string name="priority">Priority:</string>
     <string name="current_color">Current color</string>
     <string name="separator" translatable="false">/</string>
@@ -29,5 +29,8 @@
     <string name="habits">Habits</string>
     <string name="info">Info</string>
     <string name="info_content">An application that helps you keep track of your habits.</string>
+    <string name="filter">Filter</string>
+    <string name="sorting">Sorting</string>
+    <string name="sorting_desc">by amount</string>
 
 </resources>

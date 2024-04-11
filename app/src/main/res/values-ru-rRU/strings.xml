@@ -11,8 +11,8 @@
     <string name="open">Открыть</string>
     <string name="save">Сохранить</string>
     <string name="type">Тип:</string>
-    <string name="r_btn_good">Хорошая</string>
-    <string name="r_btn_bad">Плохая</string>
+    <string name="good">Хорошая</string>
+    <string name="bad">Плохая</string>
     <string name="priority">Приоритет:</string>
     <string name="current_color">Текущий цвет</string>
     <string-array name="habit_priority">
@@ -29,4 +29,7 @@
     <string name="habits">Привычки</string>
     <string name="info">Информация</string>
     <string name="info_content">Приложение, которое поможет вам отслеживать ваши привычки.</string>
+    <string name="filter">Фильтер</string>
+    <string name="sorting">Сортитровка</string>
+    <string name="sorting_desc">по числу повторений</string>
 </resources>

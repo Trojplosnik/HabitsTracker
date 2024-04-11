@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.habitstracker.Fragments.MainFragment"
+        android:name="com.example.habitstracker.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/infoFragment"
-        android:name="com.example.habitstracker.Fragments.InfoFragment"
+        android:name="com.example.habitstracker.fragments.InfoFragment"
         android:label="fragment_info"
         tools:layout="@layout/fragment_info" >
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/editAddFragment"
-        android:name="com.example.habitstracker.Fragments.EditAddFragment"
+        android:name="com.example.habitstracker.fragments.EditAddFragment"
         android:label="fragment_edit_add"
         tools:layout="@layout/fragment_edit_add" >
         <action

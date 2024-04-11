@@ -1,8 +1,5 @@
-package com.example.habitstracker
-
-
+package com.example.habitstracker.model
 import android.graphics.Color
-import java.io.Serializable
 
 
 data class Habit(
@@ -13,4 +10,4 @@ data class Habit(
     var type: String = "",
     var priority: String = "",
     var color: Int = Color.GREEN
-)  : Serializable
+)

@@ -1,4 +1,4 @@
-package com.example.habitstracker.Fragments
+package com.example.habitstracker.fragments
 
 
 import android.os.Bundle
@@ -6,16 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.Constants
-import com.example.habitstracker.Habit
-import com.example.habitstracker.Adapters.HabitsAdapter
-import com.example.habitstracker.IHabitActionListener
+import com.example.habitstracker.adapters.HabitsAdapter
+import com.example.habitstracker.interfaces.IHabitActionListener
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitsBinding
+import com.example.habitstracker.viewModels.HabitsListViewModel
 
 
 class HabitsFragment : Fragment(), IHabitActionListener {
@@ -24,11 +25,17 @@ class HabitsFragment : Fragment(), IHabitActionListener {
     private val adapter
         get() = _adapter ?: throw IllegalStateException("HabitsAdapter is null")
 
+    private var _viewModel: HabitsListViewModel? = null
+    private val viewModel
+        get() = _viewModel ?: throw IllegalStateException("HabitsListViewModel is null")
+
 
 
     private var _binding: FragmentHabitsBinding? = null
     private val binding
         get() = _binding ?: throw IllegalStateException("FragmentHabitsBinding is null")
+
+
 
     private val itemTouchHelper = ItemTouchHelper(object :
         ItemTouchHelper.SimpleCallback(
@@ -41,42 +48,37 @@ class HabitsFragment : Fragment(), IHabitActionListener {
             source: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
         ): Boolean {
-            adapter.swapHabits(source.adapterPosition, target.adapterPosition)
+            val sourcePos = source.adapterPosition
+            val targetPos = target.adapterPosition
+
+
+            viewModel.swapHabits(adapter.allHabits.indexOf(adapter.habits[sourcePos]),
+                adapter.allHabits.indexOf(adapter.habits[targetPos]))
+            adapter.notifyItemMoved(source.adapterPosition, target.adapterPosition)
             return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.adapterPosition
-            adapter.removeHabit(position)
+            viewModel.removeHabit(adapter.allHabits.indexOf(adapter.habits[position]))
+            adapter.notifyItemRemoved(position)
         }
-
     })
 
 
-    override fun onClick(habit: Habit) {
+    override fun onClick(position: Int) {
         val bundle = Bundle()
-        bundle.putSerializable(Constants.KEY_EXTRA_EDIT_HABIT, habit)
-        Navigation.findNavController(binding.root).navigate(R.id.editAddFragment, bundle)
+        bundle.putInt(Constants.KEY_EXTRA_EDIT_HABIT, position)
+        findNavController().navigate(R.id.editAddFragment, bundle)
     }
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _viewModel = ViewModelProvider(requireActivity())[HabitsListViewModel::class.java]
+    }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        @Suppress("DEPRECATION")
-        arguments?.let {
-
-                if (it.containsKey(Constants.KEY_EXTRA_ADD_HABIT)) {
-                    adapter.addHabit(it.getSerializable(Constants.KEY_EXTRA_ADD_HABIT) as Habit)
-                } else if (it.containsKey(Constants.KEY_EXTRA_EDIT_HABIT)) {
-                    adapter.editHabit(it.getSerializable(Constants.KEY_EXTRA_EDIT_HABIT) as Habit)
-                }
-            it.clear()
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,17 +96,18 @@ class HabitsFragment : Fragment(), IHabitActionListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.habits.observe(requireActivity()) {
+            adapter.allHabits = it
+            adapter.notifyDataSetChanged()}
+    }
 
     companion object {
 
         @JvmStatic
         fun newInstance(type: String) = HabitsFragment().apply {
-            _adapter = when (type)
-            {
-                Constants.KEY_HABIT_STATE_GOOD ->  HabitsAdapter(type, Constants.habits, this)
-                Constants.KEY_HABIT_STATE_BAD ->  HabitsAdapter(type, Constants.habits, this)
-                else -> throw IllegalStateException("Wrong list type in adapter")
-            }
+            _adapter = HabitsAdapter(type, listOf(), this)
         }
     }
 }

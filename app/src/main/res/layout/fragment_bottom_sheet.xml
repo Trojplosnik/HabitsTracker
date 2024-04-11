@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragments.BottomSheetFragment"
+    android:padding="@dimen/def_padding"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/def_margin"
+        android:layout_height="wrap_content"
+        android:text="@string/filter"
+        android:textSize="@dimen/large_text_size" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/def_margin"
+        android:layout_height="@dimen/et_height"
+        android:background="@drawable/custom_input"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:maxLength="18"
+        android:textSize="@dimen/def_text_size" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/def_margin"
+        android:layout_height="wrap_content"
+        android:text="@string/sorting"
+        android:textSize="@dimen/large_text_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/def_margin">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sorting_desc"
+            android:textSize="@dimen/def_text_size" />
+
+        <View
+            android:id="@+id/vArrowUp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_arrow_up"
+            android:layout_gravity="end"/>
+
+        <View
+            android:id="@+id/vArrowDown"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_arrow_down" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

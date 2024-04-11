@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.EditAddFragment"
+    tools:context=".fragments.EditAddFragment"
     android:padding="20dp">
 
         <EditText
@@ -109,14 +109,14 @@
                 android:layout_height="wrap_content"
 
 
-                android:text="@string/r_btn_good"
+                android:text="@string/good"
                 android:textSize="@dimen/def_text_size" />
 
             <RadioButton
                 android:id="@+id/rBtnBad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/r_btn_bad"
+                android:text="@string/bad"
                 android:textSize="@dimen/def_text_size" />
         </RadioGroup>
 
