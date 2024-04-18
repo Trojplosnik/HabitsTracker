@@ -32,11 +32,6 @@ class HabitsAdapter(
 
 
 
-//    fun setData(newHabits: List<Habit>){
-//        habits = newHabits.filter { habit: Habit -> habit.type == type}
-//        notifyDataSetChanged()
-//        Log.d("MeTag", "Update")
-//    }
 
     fun getHabit(position: Int): Habit = currentList[position]
 
