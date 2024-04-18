@@ -1,49 +1,35 @@
 package com.example.habitstracker.viewModels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 
 import com.example.habitstracker.model.Habit
+import com.example.habitstracker.model.HabitDatabase
 import com.example.habitstracker.model.HabitsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
-class EditEddViewModel: ViewModel() {
+class EditEddViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val model: HabitsRepository = HabitsRepository()
-
-
-    private val mutablePos: MutableLiveData<Int> = MutableLiveData()
-
-    val mutableEditHabit: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val model: HabitsRepository = HabitsRepository(HabitDatabase.getDatabase(application).habitDao())
 
 
-
-    private var mutableHabit = MutableLiveData(Habit())
-    val habit: LiveData<Habit> = mutableHabit
+    var currentHabitId: Int = 0
 
 
 
 
-    fun setHabit(position: Int) {
-        mutablePos.value = position
-        mutableEditHabit.value = true
+    fun addEditHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+        if (currentHabitId != 0) {
+                model.updateHabit(habit)
+        } else
+                model.addHabit(habit)
+            }
     }
-
-
-    fun getEditHabit() = model.getItem(mutablePos.value!!)
-
-
-    fun addEditHabit(habit: Habit){
-        if (mutableEditHabit.value == true) {
-            model.editItem(mutablePos.value!!, habit)
-        }
-        else
-            model.addItem(habit)
-    }
-
-
-
 
 
 }

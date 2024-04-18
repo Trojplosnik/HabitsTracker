@@ -14,6 +14,7 @@ import com.example.habitstracker.databinding.FragmentMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 
+
 class MainFragment : Fragment() {
 
 
@@ -63,7 +64,7 @@ class MainFragment : Fragment() {
             }.attach()
 
             fabAddHabit.setOnClickListener {
-                findNavController().navigate(R.id.editAddFragment)
+                findNavController().navigate(R.id.action_mainFragment_to_editAddFragment)
             }
 
             tvBottomSheet.setOnClickListener {

@@ -1,31 +1,35 @@
 package com.example.habitstracker.model
 
-import com.example.habitstracker.Constants
-import java.util.Collections
 
-class HabitsRepository{
+import com.example.habitstracker.interfaces.IHabitDao
 
-    private val habits = Constants.habits
-
-    fun getItem(position: Int) = habits[position]
+class HabitsRepository(private val habitsDao: IHabitDao){
 
 
-    fun editItem(position: Int, habit: Habit) {
-        habits[position] = habit
+    suspend fun updateHabit(habit: Habit) {
+        habitsDao.updateHabit(habit)
     }
 
-    fun addItem(habit: Habit) {
-        habits.add(habit)
+    suspend fun addHabit(habit: Habit) {
+        habitsDao.addHabit(habit)
     }
 
-    fun removeItem(position: Int) {
-        habits.removeAt(position)
+    suspend fun deleteHabit(habit: Habit) {
+        habitsDao.deleteHabit(habit)
     }
 
-    fun getAllItems() = habits
+    fun searchDatabase(query: String) = habitsDao.searchDatabase(query)
+
+    fun sortDatabaseASC() = habitsDao.sortDatabaseASC()
+
+    fun sortDatabaseDESC() = habitsDao.sortDatabaseDESC()
 
 
-    fun swapItems(source: Int, target: Int) {
-        Collections.swap(habits, source, target)
+    fun getAllHabits() = habitsDao.getAll()
+
+    suspend fun deleteAll() {
+        habitsDao.deleteAll()
     }
+
+
 }

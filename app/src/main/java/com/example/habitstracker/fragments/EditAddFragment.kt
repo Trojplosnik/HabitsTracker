@@ -2,6 +2,7 @@ package com.example.habitstracker.fragments
 
 
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -70,38 +71,38 @@ class EditAddFragment : Fragment() {
         }
     }
 
-    private fun checkHabitIsEmpty() = with(binding) {
-        etHabitName.text.isEmpty() or
-                etAmount.text.isEmpty() or
-                etFrequency.text.isEmpty() or
+    private fun checkInputIsEmpty() = with(binding) {
+        etHabitName.text.isEmpty() ||
+                etAmount.text.isEmpty() ||
+                etFrequency.text.isEmpty() ||
                 (rGrpType.checkedRadioButtonId == -1)
     }
 
     private fun setSaveButtonConfig() {
         with(binding) {
             btnSave.setOnClickListener {
-                if (checkHabitIsEmpty())
+                if (checkInputIsEmpty())
                     Toast.makeText(
                         activity,
                         R.string.toast_fill_fields,
                         Toast.LENGTH_LONG
                     ).show()
                 else {
-                    viewModel.addEditHabit(
-                        Habit(
-                            name = etHabitName.text.toString(),
-                            description = etHabitDesc.text.toString(),
-                            amount = etAmount.text.toString(),
-                            frequency = etFrequency.text.toString(),
-                            priority = spnHabitPriority.selectedItem.toString(),
-                            type = if (rBtnBad.isChecked) rBtnBad.text.toString()
-                            else if (rBtnGood.isChecked) rBtnGood.text.toString()
-                            else "Not selected",
-                            color = cvCurrentColor.cardBackgroundColor.defaultColor
-                        )
+                    val habit =  Habit(
+                        id = viewModel.currentHabitId,
+                        name = etHabitName.text.toString(),
+                        description = etHabitDesc.text.toString(),
+                        amount = etAmount.text.toString(),
+                        frequency = etFrequency.text.toString(),
+                        priority = spnHabitPriority.selectedItem.toString(),
+                        type = if (rBtnBad.isChecked) rBtnBad.text.toString()
+                        else if (rBtnGood.isChecked) rBtnGood.text.toString()
+                        else "Not selected",
+                        color = cvCurrentColor.cardBackgroundColor.defaultColor
                     )
-                    viewModel.mutableEditHabit.value = false
-                    findNavController().navigate(R.id.mainFragment)
+
+                    viewModel.addEditHabit(habit)
+                    findNavController().navigate(R.id.action_editAddFragment_to_mainFragment)
                 }
             }
         }
@@ -112,8 +113,7 @@ class EditAddFragment : Fragment() {
         setColorPickerConfig()
         setSaveButtonConfig()
         binding.btnClose.setOnClickListener {
-            viewModel.mutableEditHabit.value = false
-            findNavController().navigate(R.id.mainFragment)
+            findNavController().navigate(R.id.action_editAddFragment_to_mainFragment)
         }
     }
 
@@ -121,8 +121,19 @@ class EditAddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             if (it.containsKey(Constants.KEY_EXTRA_EDIT_HABIT)) {
-                viewModel.setHabit(it.getInt(Constants.KEY_EXTRA_EDIT_HABIT))
-                setEditHabitData(viewModel.getEditHabit())
+
+                val editHabit: Habit? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.getParcelable(Constants.KEY_EXTRA_EDIT_HABIT, Habit::class.java)
+                } else {
+                    @Suppress("DEPRECATION") it.getParcelable(Constants.KEY_EXTRA_EDIT_HABIT)
+                }
+
+                if (editHabit != null) {
+                    viewModel.currentHabitId = editHabit.id
+                    setEditHabitData(editHabit)
+                }
+                else
+                    viewModel.currentHabitId = 0
             }
         }
     }

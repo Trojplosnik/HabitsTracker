@@ -1,59 +1,55 @@
 package com.example.habitstracker.viewModels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.habitstracker.model.Habit
+import com.example.habitstracker.model.HabitDatabase
 import com.example.habitstracker.model.HabitsRepository
-import java.util.Locale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class HabitsListViewModel: ViewModel() {
+class HabitsListViewModel(application: Application): AndroidViewModel(application) {
 
-    private val model: HabitsRepository = HabitsRepository()
-
-    private val mutableHabits: MutableLiveData<List<Habit>> = MutableLiveData()
-    val habits: LiveData<List<Habit>> = mutableHabits
+    private val model: HabitsRepository = HabitsRepository(HabitDatabase.getDatabase(application).habitDao())
 
 
-    init {
-        mutableHabits.value = model.getAllItems()
-    }
 
-    fun sortList()
-    {
-        mutableHabits.value = model.getAllItems().sortedBy { it.amount }
-    }
-
-    fun reverseSortList()
-    {
-        mutableHabits.value = model.getAllItems().sortedBy { it.amount }.reversed()
-    }
-
-    fun removeFilter()
-    {
-        mutableHabits.value = model.getAllItems()
-    }
+    var habits: LiveData<List<Habit>> = model.getAllHabits()
 
 
-    fun filterList(query: String?)
+
+    fun searchDatabase(query: String?)
     {
         if (query != null) {
-            mutableHabits.value = model.getAllItems().filter {
-                it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT))
-            }
+            habits = model.searchDatabase(query)
         }
     }
 
-    fun removeHabit(position: Int){
-        model.removeItem(position)
+    fun sortDatabase(isAsc: Boolean = false)
+    {
+        habits = if (isAsc)
+            model.sortDatabaseASC()
+        else
+            model.sortDatabaseDESC()
     }
 
-    fun swapHabits(source: Int, target: Int) {
-        model.swapItems(source, target)
+
+
+    fun deleteHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+                model.deleteHabit(habit)
+        }
     }
 
 
 
+    fun deleteAll() {
+        viewModelScope.launch(Dispatchers.IO) {
+            model.deleteAll()
+        }
+    }
 
 
 

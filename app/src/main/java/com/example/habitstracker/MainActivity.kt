@@ -3,7 +3,6 @@ package com.example.habitstracker
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,10 +17,6 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding
         get() = _binding ?: throw IllegalStateException("ActivityMainBinding is null")
-
-    private var _navController: NavController? = null
-    private val navController
-        get() = _navController ?: throw IllegalStateException("NavController is null")
 
 
 
@@ -53,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private fun setNavController() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentHolder) as NavHostFragment
-        _navController = navHostFragment.navController
+        val navController = navHostFragment.navController
 
         _appBarConfiguration = AppBarConfiguration(
             navController.graph,
