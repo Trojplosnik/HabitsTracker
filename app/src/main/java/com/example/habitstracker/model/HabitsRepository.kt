@@ -1,7 +1,6 @@
 package com.example.habitstracker.model
 
 
-import com.example.habitstracker.interfaces.IHabitDao
 
 class HabitsRepository(private val habitsDao: IHabitDao){
 

@@ -1,19 +1,20 @@
 package com.example.habitstracker.adapters
 
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.habitstracker.Constants
+import com.example.habitstracker.R
 import com.example.habitstracker.databinding.RvItemHabitBinding
 import com.example.habitstracker.model.Habit
-import com.example.habitstracker.interfaces.IHabitActionListener
 
 
-class HabitsAdapter(
-    private val actionListener: IHabitActionListener
-) : ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCallback) {
+class HabitsAdapter : ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCallback) {
 
 
     object ItemCallback : DiffUtil.ItemCallback<Habit>() {
@@ -29,8 +30,6 @@ class HabitsAdapter(
     class HabitsViewHolder(
         val binding: RvItemHabitBinding
     ) : RecyclerView.ViewHolder(binding.root)
-
-
 
 
     fun getHabit(position: Int): Habit = currentList[position]
@@ -53,7 +52,9 @@ class HabitsAdapter(
 
         with(holder.binding) {
             root.setOnClickListener {
-                actionListener.onClick(habit)
+                val bundle = Bundle()
+                bundle.putParcelable(Constants.KEY_EXTRA_EDIT_HABIT, habit)
+                holder.itemView.findNavController().navigate(R.id.action_mainFragment_to_editAddFragment, bundle)
             }
             with(habit) {
                 tvName.text = name

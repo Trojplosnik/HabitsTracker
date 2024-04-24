@@ -12,32 +12,31 @@ import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.children
 import androidx.core.view.doOnLayout
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.Constants
 import com.example.habitstracker.model.Habit
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentEditAddBinding
+import com.example.habitstracker.model.HabitDatabase
+import com.example.habitstracker.model.HabitsRepository
 import com.example.habitstracker.viewModels.EditEddViewModel
+import com.example.habitstracker.viewModels.factories.EditEddViewModelFactory
 
 
 class EditAddFragment : Fragment() {
 
-    private var _viewModel: EditEddViewModel? = null
-    private val viewModel
-        get() = _viewModel ?: throw IllegalStateException("EditEddViewModel is null")
+
 
 
     private var _binding: FragmentEditAddBinding? = null
     private val binding
         get() = _binding ?: throw IllegalStateException("FragmentAddEditBinding is null")
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _viewModel = ViewModelProvider(this)[EditEddViewModel::class.java]
+    private val viewModel: EditEddViewModel by viewModels<EditEddViewModel> {
+        EditEddViewModelFactory(HabitsRepository(HabitDatabase.getDatabase(requireContext()).habitDao()))
     }
+
 
 
     override fun onCreateView(
@@ -59,11 +58,11 @@ class EditAddFragment : Fragment() {
                     layout.measuredHeight, Bitmap.Config.ARGB_8888
                 )
                 linL.children.forEach { child ->
+                    val color = bitmap.getPixel(
+                        (child.x + child.width / 2).toInt(),
+                        (child.y + child.height / 2).toInt()
+                    )
                     child.setOnClickListener {
-                        val color = bitmap.getPixel(
-                            (it.x + it.width / 2).toInt(),
-                            (it.y + it.height / 2).toInt()
-                        )
                         cvCurrentColor.setCardBackgroundColor(color)
                     }
                 }

@@ -7,26 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.habitstracker.Constants
 import com.example.habitstracker.adapters.HabitsAdapter
-import com.example.habitstracker.interfaces.IHabitActionListener
-import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitsBinding
 import com.example.habitstracker.model.Habit
+import com.example.habitstracker.model.HabitDatabase
+import com.example.habitstracker.model.HabitsRepository
 import com.example.habitstracker.viewModels.HabitsListViewModel
+import com.example.habitstracker.viewModels.factories.HabitsListViewModelFactory
 
 
-class HabitsFragment : Fragment(), IHabitActionListener {
+class HabitsFragment : Fragment() {
 
-    private var _adapter: HabitsAdapter? = null
-    private val adapter
-        get() = _adapter ?: throw IllegalStateException("HabitsAdapter is null")
+    private val adapter by lazy { HabitsAdapter() }
 
-    private val viewModel: HabitsListViewModel by activityViewModels()
+    private val viewModel: HabitsListViewModel by activityViewModels {
+        HabitsListViewModelFactory(HabitsRepository(HabitDatabase.getDatabase(requireContext()).habitDao()))
+    }
 
     private var type = ""
 
@@ -56,20 +55,12 @@ class HabitsFragment : Fragment(), IHabitActionListener {
     })
 
 
-    override fun onClick(habit: Habit) {
-        val bundle = Bundle()
-        bundle.putParcelable(Constants.KEY_EXTRA_EDIT_HABIT, habit)
-        findNavController().navigate(R.id.action_mainFragment_to_editAddFragment, bundle)
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentHabitsBinding.inflate(inflater, container, false)
-        _adapter = HabitsAdapter(this)
 
 
         with(binding) {
@@ -77,6 +68,10 @@ class HabitsFragment : Fragment(), IHabitActionListener {
             rvHabitsRecycler.adapter = adapter
             itemTouchHelper.attachToRecyclerView(rvHabitsRecycler)
 
+
+            viewModel.habits.observe(requireActivity()) { list ->
+                adapter.submitList(list.filter { habit: Habit -> habit.type == type })
+            }
 
             viewModel.habits.observe(requireActivity()) { list ->
                 adapter.submitList(list.filter { habit: Habit -> habit.type == type })

@@ -1,12 +1,11 @@
-package com.example.habitstracker.interfaces
+package com.example.habitstracker.model
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.habitstracker.model.Habit
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -16,20 +15,20 @@ interface IHabitDao {
     suspend fun addHabit(habit: Habit)
 
     @Query("SELECT * FROM habits_table")
-    fun getAll(): LiveData<List<Habit>>
+    fun getAll(): Flow<List<Habit>>
 
     @Query("DELETE FROM habits_table")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM habits_table WHERE name LIKE '%' || :query || '%'")
-    fun searchDatabase(query: String): LiveData<List<Habit>>
+    fun searchDatabase(query: String): List<Habit>
 
 
     @Query("SELECT * FROM habits_table ORDER BY amount ASC")
-    fun sortDatabaseASC(): LiveData<List<Habit>>
+    fun sortDatabaseASC(): List<Habit>
 
     @Query("SELECT * FROM habits_table ORDER BY amount DESC")
-    fun sortDatabaseDESC(): LiveData<List<Habit>>
+    fun sortDatabaseDESC(): List<Habit>
 
     @Delete
     suspend fun deleteHabit(habit: Habit)

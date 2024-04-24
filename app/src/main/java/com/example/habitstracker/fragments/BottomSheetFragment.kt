@@ -1,5 +1,6 @@
 package com.example.habitstracker.fragments
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +8,19 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import com.example.habitstracker.databinding.FragmentBottomSheetBinding
+import com.example.habitstracker.model.HabitDatabase
+import com.example.habitstracker.model.HabitsRepository
 
 import com.example.habitstracker.viewModels.HabitsListViewModel
+import com.example.habitstracker.viewModels.factories.HabitsListViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
-    private val viewModel: HabitsListViewModel by activityViewModels()
+    private val viewModel: HabitsListViewModel by activityViewModels {
+        HabitsListViewModelFactory(HabitsRepository(HabitDatabase.getDatabase(requireContext()).habitDao()))
+    }
 
 
     private var _binding: FragmentBottomSheetBinding? = null
@@ -30,6 +36,11 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
         init()
         return binding.root
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        viewModel.setHabits()
     }
 
     private fun init() {
@@ -49,7 +60,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                     viewModel.searchDatabase(newText)
                     return true
                 }
-
             })
         }
     }

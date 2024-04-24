@@ -1,48 +1,63 @@
 package com.example.habitstracker.viewModels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.habitstracker.model.Habit
-import com.example.habitstracker.model.HabitDatabase
 import com.example.habitstracker.model.HabitsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HabitsListViewModel(application: Application): AndroidViewModel(application) {
+class HabitsListViewModel(private val model: HabitsRepository) : ViewModel() {
 
-    private val model: HabitsRepository = HabitsRepository(HabitDatabase.getDatabase(application).habitDao())
-
-
-
-    var habits: LiveData<List<Habit>> = model.getAllHabits()
+    private val _habits: MutableLiveData<List<Habit>> = MutableLiveData(listOf())
+    val habits: LiveData<List<Habit>> = _habits
 
 
+    init {
+        setHabits()
+    }
 
-    fun searchDatabase(query: String?)
-    {
-        if (query != null) {
-            habits = model.searchDatabase(query)
+    fun setHabits() {
+        viewModelScope.launch(Dispatchers.IO) {
+            model.getAllHabits().collect { habitsList ->
+                _habits.postValue(habitsList)
+            }
         }
     }
 
-    fun sortDatabase(isAsc: Boolean = false)
-    {
-        habits = if (isAsc)
-            model.sortDatabaseASC()
-        else
-            model.sortDatabaseDESC()
+
+    fun searchDatabase(query: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (!query.isNullOrEmpty()) {
+                _habits.postValue(model.searchDatabase(query))
+            } else
+                _habits.postValue(model.sortDatabaseASC())
+        }
     }
 
+    fun sortDatabase(isDesc: Boolean = false) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val sortedHabits = if (isDesc)
+                model.sortDatabaseDESC()
+            else
+                model.sortDatabaseASC()
+
+            withContext(Dispatchers.Main) {
+                _habits.value = sortedHabits
+            }
+        }
+
+    }
 
 
     fun deleteHabit(habit: Habit) {
         viewModelScope.launch(Dispatchers.IO) {
-                model.deleteHabit(habit)
+            model.deleteHabit(habit)
         }
     }
-
 
 
     fun deleteAll() {
@@ -50,7 +65,4 @@ class HabitsListViewModel(application: Application): AndroidViewModel(applicatio
             model.deleteAll()
         }
     }
-
-
-
 }
