@@ -31,10 +31,9 @@ class HabitsListViewModel(private val model: HabitsRepository) : ViewModel() {
 
     fun searchDatabase(query: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (!query.isNullOrEmpty()) {
+            if (query != null) {
                 _habits.postValue(model.searchDatabase(query))
-            } else
-                _habits.postValue(model.sortDatabaseASC())
+            }
         }
     }
 
