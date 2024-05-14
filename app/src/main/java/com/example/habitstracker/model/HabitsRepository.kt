@@ -17,6 +17,9 @@ class HabitsRepository(private val habitsDao: IHabitDao){
         habitsDao.deleteHabit(habit)
     }
 
+    fun getHabitById(id: Int) = habitsDao.getHabitById(id)
+
+
     fun searchDatabase(query: String) = habitsDao.searchDatabase(query)
 
     fun sortDatabaseASC() = habitsDao.sortDatabaseASC()

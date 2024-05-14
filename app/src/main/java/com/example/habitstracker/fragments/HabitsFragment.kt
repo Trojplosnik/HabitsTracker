@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.habitstracker.Constants
+import com.example.habitstracker.R
 import com.example.habitstracker.adapters.HabitsAdapter
 import com.example.habitstracker.databinding.FragmentHabitsBinding
 import com.example.habitstracker.model.Habit
@@ -21,7 +24,7 @@ import com.example.habitstracker.viewModels.factories.HabitsListViewModelFactory
 
 class HabitsFragment : Fragment() {
 
-    private val adapter by lazy { HabitsAdapter() }
+    private val adapter by lazy { HabitsAdapter(this::navigateToEditAdd) }
 
     private val viewModel: HabitsListViewModel by activityViewModels {
         HabitsListViewModelFactory(HabitsRepository(HabitDatabase.getDatabase(requireContext()).habitDao()))
@@ -53,6 +56,13 @@ class HabitsFragment : Fragment() {
             viewModel.deleteHabit(adapter.getHabit(viewHolder.adapterPosition))
         }
     })
+
+
+    private fun navigateToEditAdd(habitId: Int){
+        val bundle = Bundle()
+        bundle.putInt(Constants.KEY_EXTRA_EDIT_HABIT, habitId)
+        findNavController().navigate(R.id.action_mainFragment_to_editAddFragment, bundle)
+    }
 
 
     override fun onCreateView(

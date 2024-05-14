@@ -2,17 +2,20 @@ package com.example.habitstracker.fragments
 
 
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.children
 import androidx.core.view.doOnLayout
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.Constants
 import com.example.habitstracker.model.Habit
@@ -22,10 +25,10 @@ import com.example.habitstracker.model.HabitDatabase
 import com.example.habitstracker.model.HabitsRepository
 import com.example.habitstracker.viewModels.EditEddViewModel
 import com.example.habitstracker.viewModels.factories.EditEddViewModelFactory
+import kotlinx.coroutines.launch
 
 
 class EditAddFragment : Fragment() {
-
 
 
 
@@ -34,9 +37,12 @@ class EditAddFragment : Fragment() {
         get() = _binding ?: throw IllegalStateException("FragmentAddEditBinding is null")
 
     private val viewModel: EditEddViewModel by viewModels<EditEddViewModel> {
-        EditEddViewModelFactory(HabitsRepository(HabitDatabase.getDatabase(requireContext()).habitDao()))
+        EditEddViewModelFactory(
+            HabitsRepository(
+                HabitDatabase.getDatabase(requireContext()).habitDao()
+            )
+        )
     }
-
 
 
     override fun onCreateView(
@@ -44,9 +50,40 @@ class EditAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditAddBinding.inflate(inflater, container, false)
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                    if (uiState.habitLoaded)
+                    {
+                        setEditHabitData(viewModel.getCurrentHabit())
+                        viewModel.dismissState()
+                    }
+                    if (uiState.isSaving) {
+                        if (uiState.showToast)
+                        {
+                            Toast.makeText(
+                                activity,
+                                R.string.toast_fill_fields,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            viewModel.dismissState()
+                        }
+                        else
+                        {
+                            viewModel.dismissState()
+                            findNavController().navigate(R.id.action_editAddFragment_to_mainFragment)
+                        }
+
+                    }
+                }
+        }
+
+
         init()
         return binding.root
     }
+
 
 
     private fun setColorPickerConfig() {
@@ -64,55 +101,61 @@ class EditAddFragment : Fragment() {
                     )
                     child.setOnClickListener {
                         cvCurrentColor.setCardBackgroundColor(color)
+                        viewModel.setColor(color)
                     }
                 }
             }
         }
     }
 
-    private fun checkInputIsEmpty() = with(binding) {
-        etHabitName.text.isEmpty() ||
-                etAmount.text.isEmpty() ||
-                etFrequency.text.isEmpty() ||
-                (rGrpType.checkedRadioButtonId == -1)
-    }
 
-    private fun setSaveButtonConfig() {
+    private fun setVMConfig() {
         with(binding) {
-            btnSave.setOnClickListener {
-                if (checkInputIsEmpty())
-                    Toast.makeText(
-                        activity,
-                        R.string.toast_fill_fields,
-                        Toast.LENGTH_LONG
-                    ).show()
-                else {
-                    val habit =  Habit(
-                        id = viewModel.currentHabitId,
-                        name = etHabitName.text.toString(),
-                        description = etHabitDesc.text.toString(),
-                        amount = etAmount.text.toString(),
-                        frequency = etFrequency.text.toString(),
-                        priority = spnHabitPriority.selectedItem.toString(),
-                        type = if (rBtnBad.isChecked) rBtnBad.text.toString()
-                        else if (rBtnGood.isChecked) rBtnGood.text.toString()
-                        else "Not selected",
-                        color = cvCurrentColor.cardBackgroundColor.defaultColor
-                    )
+            etHabitName.doAfterTextChanged { viewModel.setName(it.toString()) }
+            etHabitDesc.doAfterTextChanged { viewModel.setDescription(it.toString()) }
+            etAmount.doAfterTextChanged { viewModel.setAmount(it.toString()) }
+            etFrequency.doAfterTextChanged { viewModel.setFrequency(it.toString()) }
+            etHabitName.doAfterTextChanged { viewModel.setName(it.toString()) }
 
-                    viewModel.addEditHabit(habit)
-                    findNavController().navigate(R.id.action_editAddFragment_to_mainFragment)
+            rGrpType.setOnCheckedChangeListener { _, _ ->
+                if (rBtnBad.isChecked) viewModel.setType(rBtnBad.text.toString())
+                else if (rBtnGood.isChecked) viewModel.setType(rBtnGood.text.toString())
+            }
+
+
+            spnHabitPriority.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.setPriority(spnHabitPriority.selectedItem.toString())
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    viewModel.setPriority("Not selected")
                 }
             }
+
+
         }
     }
 
     private fun init() {
 
         setColorPickerConfig()
-        setSaveButtonConfig()
-        binding.btnClose.setOnClickListener {
-            findNavController().navigate(R.id.action_editAddFragment_to_mainFragment)
+        setVMConfig()
+
+        with(binding) {
+            btnSave.setOnClickListener {
+                viewModel.sendToDataBase()
+            }
+
+
+            btnClose.setOnClickListener {
+                findNavController().navigate(R.id.action_editAddFragment_to_mainFragment)
+            }
         }
     }
 
@@ -120,19 +163,11 @@ class EditAddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             if (it.containsKey(Constants.KEY_EXTRA_EDIT_HABIT)) {
+                val habitId = it.getInt(Constants.KEY_EXTRA_EDIT_HABIT, 0)
 
-                val editHabit: Habit? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.getParcelable(Constants.KEY_EXTRA_EDIT_HABIT, Habit::class.java)
-                } else {
-                    @Suppress("DEPRECATION") it.getParcelable(Constants.KEY_EXTRA_EDIT_HABIT)
+                if (habitId > 0) {
+                    viewModel.getHabitById(habitId)
                 }
-
-                if (editHabit != null) {
-                    viewModel.currentHabitId = editHabit.id
-                    setEditHabitData(editHabit)
-                }
-                else
-                    viewModel.currentHabitId = 0
             }
         }
     }

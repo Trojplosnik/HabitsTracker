@@ -17,11 +17,16 @@ interface IHabitDao {
     @Query("SELECT * FROM habits_table")
     fun getAll(): Flow<List<Habit>>
 
+    @Query("SELECT * FROM habits_table WHERE id = :id")
+    fun getHabitById(id: Int): Habit
+
+
     @Query("DELETE FROM habits_table")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM habits_table WHERE name LIKE '%' || :query || '%'")
     fun searchDatabase(query: String): List<Habit>
+
 
 
     @Query("SELECT * FROM habits_table ORDER BY amount ASC")

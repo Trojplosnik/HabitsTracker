@@ -1,20 +1,17 @@
 package com.example.habitstracker.adapters
 
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.habitstracker.Constants
-import com.example.habitstracker.R
 import com.example.habitstracker.databinding.RvItemHabitBinding
 import com.example.habitstracker.model.Habit
 
 
-class HabitsAdapter : ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCallback) {
+class HabitsAdapter(private val onClick: (Int) -> Unit) :
+    ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCallback) {
 
 
     object ItemCallback : DiffUtil.ItemCallback<Habit>() {
@@ -35,7 +32,6 @@ class HabitsAdapter : ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCal
     fun getHabit(position: Int): Habit = currentList[position]
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = RvItemHabitBinding.inflate(inflater, parent, false)
@@ -52,9 +48,7 @@ class HabitsAdapter : ListAdapter<Habit, HabitsAdapter.HabitsViewHolder>(ItemCal
 
         with(holder.binding) {
             root.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putParcelable(Constants.KEY_EXTRA_EDIT_HABIT, habit)
-                holder.itemView.findNavController().navigate(R.id.action_mainFragment_to_editAddFragment, bundle)
+                onClick(habit.id)
             }
             with(habit) {
                 tvName.text = name
