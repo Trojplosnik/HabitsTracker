@@ -1,4 +1,4 @@
-package com.example.habitstracker.adapters
+package com.example.habitstracker.domain.adapters
 
 
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.databinding.RvItemHabitBinding
-import com.example.habitstracker.model.Habit
+import com.example.habitstracker.domain.entities.Habit
 
 
 class HabitsAdapter(private val onClick: (Int) -> Unit) :
@@ -53,10 +53,10 @@ class HabitsAdapter(private val onClick: (Int) -> Unit) :
             with(habit) {
                 tvName.text = name
                 tvDescription.text = description
-                tvAmount.text = amount
-                tvFrequency.text = frequency
-                tvType.text = type
-                tvPriority.text = priority
+                tvAmount.text = amount.toString()
+                tvFrequency.text = frequency.toString()
+                tvType.text = type.getType()
+                tvPriority.text = priority.getPriority()
                 cvHabit.setCardBackgroundColor(color)
             }
         }

@@ -1,4 +1,4 @@
-package com.example.habitstracker.fragments
+package com.example.habitstracker.presentation.fragments
 
 
 import android.os.Bundle
@@ -11,26 +11,50 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.habitstracker.Constants
+import com.example.habitstracker.domain.Constants
 import com.example.habitstracker.R
-import com.example.habitstracker.adapters.HabitsAdapter
+import com.example.habitstracker.data.database.HabitDatabase
+import com.example.habitstracker.data.remote.IHabitService
+import com.example.habitstracker.data.remote.RemoteDataSource
+import com.example.habitstracker.data.repositories.HabitsRepositoryImpl
+import com.example.habitstracker.domain.adapters.HabitsAdapter
 import com.example.habitstracker.databinding.FragmentHabitsBinding
-import com.example.habitstracker.model.Habit
-import com.example.habitstracker.model.HabitDatabase
-import com.example.habitstracker.model.HabitsRepository
-import com.example.habitstracker.viewModels.HabitsListViewModel
-import com.example.habitstracker.viewModels.factories.HabitsListViewModelFactory
+import com.example.habitstracker.domain.entities.Habit
+import com.example.habitstracker.domain.entities.Type
+import com.example.habitstracker.domain.repositorys.IHabitsRepository
+import com.example.habitstracker.presentation.viewModels.HabitsListViewModel
+import com.example.habitstracker.presentation.viewModels.factories.HabitsListViewModelFactory
+
+import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class HabitsFragment : Fragment() {
 
     private val adapter by lazy { HabitsAdapter(this::navigateToEditAdd) }
 
+
+
+
+    val okHttpClient = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }).build()
+
+    private val HabitService = Retrofit.Builder()
+        .baseUrl("https://droid-test-server.doubletapp.ru/api/")
+        .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient)
+        .build().create(IHabitService::class.java)
+
+
     private val viewModel: HabitsListViewModel by activityViewModels {
-        HabitsListViewModelFactory(HabitsRepository(HabitDatabase.getDatabase(requireContext()).habitDao()))
+        HabitsListViewModelFactory(HabitsRepositoryImpl(RemoteDataSource(HabitService),
+            HabitDatabase.getDatabase(requireContext()).habitDao()))
     }
 
-    private var type = ""
+    private var type = Type.NOT_SELECTED
 
 
     private var _binding: FragmentHabitsBinding? = null
@@ -95,7 +119,7 @@ class HabitsFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(type: String) = HabitsFragment().apply {
+        fun newInstance(type: Type) = HabitsFragment().apply {
             this.type = type
         }
     }

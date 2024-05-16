@@ -1,20 +1,24 @@
-package com.example.habitstracker.viewModels
+package com.example.habitstracker.presentation.viewModels
 
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
-import com.example.habitstracker.model.Habit
-import com.example.habitstracker.model.HabitsRepository
+import com.example.habitstracker.domain.entities.Habit
+import com.example.habitstracker.domain.entities.Priority
+import com.example.habitstracker.domain.entities.Type
+import com.example.habitstracker.domain.repositorys.IHabitsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class EditEddViewModel(private val model: HabitsRepository) : ViewModel() {
+class EditEddViewModel (private val model: IHabitsRepository) : ViewModel() {
     data class EditEddUiState(
         val showToast: Boolean = false,
         val isSaving: Boolean = false,
@@ -41,18 +45,18 @@ class EditEddViewModel(private val model: HabitsRepository) : ViewModel() {
     }
 
     fun setAmount(newAmount: String) {
-        currentHabit = currentHabit.copy(amount = newAmount)
+        currentHabit = currentHabit.copy(amount = newAmount.toInt())
     }
 
     fun setFrequency(newFrequency: String) {
-        currentHabit = currentHabit.copy(frequency = newFrequency)
+        currentHabit = currentHabit.copy(frequency = newFrequency.toInt())
     }
 
-    fun setPriority(newPriority: String) {
+    fun setPriority(newPriority: Priority) {
         currentHabit = currentHabit.copy(priority = newPriority)
     }
 
-    fun setType(newType: String) {
+    fun setType(newType: Type) {
         currentHabit = currentHabit.copy(type = newType)
     }
 
@@ -73,7 +77,7 @@ class EditEddViewModel(private val model: HabitsRepository) : ViewModel() {
     private fun checkInputIsEmpty() = currentHabit.name.isEmpty() ||
                                         currentHabit.name.isEmpty() ||
                                         currentHabit.name.isEmpty() ||
-                                        currentHabit.type.isEmpty()
+                                        currentHabit.type == Type.NOT_SELECTED
 
 
 

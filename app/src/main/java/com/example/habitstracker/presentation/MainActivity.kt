@@ -1,4 +1,4 @@
-package com.example.habitstracker
+package com.example.habitstracker.presentation
 
 
 import android.os.Bundle
@@ -8,7 +8,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import com.example.habitstracker.R
 import com.example.habitstracker.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 
 

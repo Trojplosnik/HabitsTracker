@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".fragments.BottomSheetFragment"
+    tools:context=".presentation.fragments.BottomSheetFragment"
     android:padding="@dimen/def_padding"
     android:orientation="vertical">
 

@@ -1,4 +1,4 @@
-package com.example.habitstracker.fragments
+package com.example.habitstracker.presentation.fragments
 
 
 import android.graphics.Bitmap
@@ -17,15 +17,25 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.habitstracker.Constants
-import com.example.habitstracker.model.Habit
+import com.example.habitstracker.domain.Constants
+import com.example.habitstracker.domain.entities.Habit
 import com.example.habitstracker.R
+import com.example.habitstracker.data.database.HabitDatabase
+import com.example.habitstracker.data.remote.IHabitService
+import com.example.habitstracker.data.remote.RemoteDataSource
+import com.example.habitstracker.data.repositories.HabitsRepositoryImpl
 import com.example.habitstracker.databinding.FragmentEditAddBinding
-import com.example.habitstracker.model.HabitDatabase
-import com.example.habitstracker.model.HabitsRepository
-import com.example.habitstracker.viewModels.EditEddViewModel
-import com.example.habitstracker.viewModels.factories.EditEddViewModelFactory
+import com.example.habitstracker.domain.entities.Priority
+import com.example.habitstracker.domain.entities.Type
+import com.example.habitstracker.presentation.viewModels.EditEddViewModel
+import com.example.habitstracker.presentation.viewModels.factories.EditEddViewModelFactory
 import kotlinx.coroutines.launch
+
+import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class EditAddFragment : Fragment() {
@@ -36,13 +46,26 @@ class EditAddFragment : Fragment() {
     private val binding
         get() = _binding ?: throw IllegalStateException("FragmentAddEditBinding is null")
 
+
+    val okHttpClient = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }).build()
+
+    private val HabitService = Retrofit.Builder()
+        .baseUrl("https://droid-test-server.doubletapp.ru/api/")
+        .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient)
+        .build().create(IHabitService::class.java)
+
+
     private val viewModel: EditEddViewModel by viewModels<EditEddViewModel> {
         EditEddViewModelFactory(
-            HabitsRepository(
-                HabitDatabase.getDatabase(requireContext()).habitDao()
-            )
+            HabitsRepositoryImpl(
+                RemoteDataSource(HabitService),
+                HabitDatabase.getDatabase(requireContext()).habitDao())
         )
     }
+
+
 
 
     override fun onCreateView(
@@ -99,6 +122,7 @@ class EditAddFragment : Fragment() {
                         (child.x + child.width / 2).toInt(),
                         (child.y + child.height / 2).toInt()
                     )
+                    cvCurrentColor.setCardBackgroundColor(color)
                     child.setOnClickListener {
                         cvCurrentColor.setCardBackgroundColor(color)
                         viewModel.setColor(color)
@@ -118,8 +142,8 @@ class EditAddFragment : Fragment() {
             etHabitName.doAfterTextChanged { viewModel.setName(it.toString()) }
 
             rGrpType.setOnCheckedChangeListener { _, _ ->
-                if (rBtnBad.isChecked) viewModel.setType(rBtnBad.text.toString())
-                else if (rBtnGood.isChecked) viewModel.setType(rBtnGood.text.toString())
+                if (rBtnBad.isChecked) viewModel.setType(Type.BAD)
+                else if (rBtnGood.isChecked) viewModel.setType(Type.GOOD)
             }
 
 
@@ -130,11 +154,11 @@ class EditAddFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.setPriority(spnHabitPriority.selectedItem.toString())
+                    viewModel.setPriority(Priority.entries[position])
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    viewModel.setPriority("Not selected")
+                    viewModel.setPriority(Priority.NOT_SELECTED)
                 }
             }
 
@@ -177,14 +201,12 @@ class EditAddFragment : Fragment() {
             with(habit) {
                 etHabitName.setText(name)
                 etHabitDesc.setText(description)
-                etAmount.setText(amount)
-                etFrequency.setText(frequency)
-                spnHabitPriority.setSelection(
-                    resources.getStringArray(R.array.habit_priority).indexOf(priority)
-                )
+                etAmount.setText(amount.toString())
+                etFrequency.setText(frequency.toString())
+                spnHabitPriority.setSelection(priority.ordinal)
                 when (type) {
-                    rBtnBad.text.toString() -> rGrpType.check(rBtnBad.id)
-                    rBtnGood.text.toString() -> rGrpType.check(rBtnGood.id)
+                    Type.BAD-> rGrpType.check(rBtnBad.id)
+                    Type.GOOD -> rGrpType.check(rBtnGood.id)
                     else -> rGrpType.clearCheck()
                 }
                 cvCurrentColor.setCardBackgroundColor(color)

@@ -1,16 +1,19 @@
-package com.example.habitstracker.viewModels
+package com.example.habitstracker.presentation.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.habitstracker.model.Habit
-import com.example.habitstracker.model.HabitsRepository
+import com.example.habitstracker.domain.entities.Habit
+import com.example.habitstracker.domain.repositorys.IHabitsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class HabitsListViewModel(private val model: HabitsRepository) : ViewModel() {
+
+class HabitsListViewModel (private val model: IHabitsRepository) : ViewModel() {
 
     private val _habits: MutableLiveData<List<Habit>> = MutableLiveData(listOf())
     val habits: LiveData<List<Habit>> = _habits
@@ -59,9 +62,9 @@ class HabitsListViewModel(private val model: HabitsRepository) : ViewModel() {
     }
 
 
-    fun deleteAll() {
-        viewModelScope.launch(Dispatchers.IO) {
-            model.deleteAll()
-        }
-    }
+//    fun deleteAll() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            model.deleteAll()
+//        }
+//    }
 }

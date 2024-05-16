@@ -1,4 +1,4 @@
-package com.example.habitstracker.fragments
+package com.example.habitstracker.presentation.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

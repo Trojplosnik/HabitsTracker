@@ -1,9 +1,10 @@
-package com.example.habitstracker.model
+package com.example.habitstracker.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.habitstracker.domain.entities.Habit
 
 
 @Database(entities = [Habit::class], version = 1, exportSchema = false)

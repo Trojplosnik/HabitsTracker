@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.parcelize)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -60,13 +61,35 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    //Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+
+    //Room
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
+
+    //Livedata
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
+    //Retrofit
+    implementation(libs.retrofit)
+
+    //Gson
+    implementation (libs.converter.gson)
+
+    //Okhttp
+    implementation (libs.okhttp)
+    implementation (libs.squareup.logging.interceptor)
+
+    //Hilt
+    implementation (libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.androidx.fragment.ktx)
 
 
 

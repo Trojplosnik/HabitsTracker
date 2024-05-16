@@ -1,11 +1,11 @@
-package com.example.habitstracker.adapters
+package com.example.habitstracker.domain.adapters
 
 import androidx.fragment.app.Fragment
 
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.habitstracker.fragments.HabitsFragment
+import com.example.habitstracker.presentation.fragments.HabitsFragment
 
 class ViewPaperAdapter(
     private val fragments: Array<HabitsFragment>,

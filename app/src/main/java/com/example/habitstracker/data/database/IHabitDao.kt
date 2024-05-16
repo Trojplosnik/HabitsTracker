@@ -1,10 +1,11 @@
-package com.example.habitstracker.model
+package com.example.habitstracker.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.habitstracker.domain.entities.Habit
 import kotlinx.coroutines.flow.Flow
 
 

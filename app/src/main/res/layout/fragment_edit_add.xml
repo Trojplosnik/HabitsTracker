@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.EditAddFragment"
+    tools:context=".presentation.fragments.EditAddFragment"
     android:padding="24dp">
 
     <EditText
@@ -72,7 +72,7 @@
         android:background="@drawable/custom_input"
         android:hint="@string/hint_frequency"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="number"
         android:maxLength="12"
         android:paddingStart="@dimen/def_padding"
         android:paddingEnd="@dimen/def_padding"

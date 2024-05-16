@@ -1,11 +1,11 @@
-package com.example.habitstracker.viewModels.factories
+package com.example.habitstracker.presentation.viewModels.factories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.habitstracker.model.HabitsRepository
-import com.example.habitstracker.viewModels.HabitsListViewModel
+import com.example.habitstracker.data.repositories.HabitsRepositoryImpl
+import com.example.habitstracker.presentation.viewModels.HabitsListViewModel
 
-class HabitsListViewModelFactory(private val model: HabitsRepository) : ViewModelProvider.Factory {
+class HabitsListViewModelFactory(private val model: HabitsRepositoryImpl) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HabitsListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

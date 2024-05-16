@@ -1,4 +1,4 @@
-package com.example.habitstracker.fragments
+package com.example.habitstracker.presentation.fragments
 
 
 import android.os.Bundle
@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.habitstracker.Constants
+import com.example.habitstracker.domain.Constants
 import com.example.habitstracker.R
-import com.example.habitstracker.adapters.ViewPaperAdapter
+import com.example.habitstracker.domain.adapters.ViewPaperAdapter
 import com.example.habitstracker.databinding.FragmentMainBinding
+import com.example.habitstracker.domain.entities.Type
 import com.google.android.material.tabs.TabLayoutMediator
-
+import dagger.hilt.android.AndroidEntryPoint
 
 
 class MainFragment : Fragment() {
@@ -29,13 +30,10 @@ class MainFragment : Fragment() {
     )
 
 
-
     private val fragments = arrayOf(
-        HabitsFragment.newInstance(Constants.KEY_HABIT_STATE_GOOD),
-        HabitsFragment.newInstance(Constants.KEY_HABIT_STATE_BAD)
+        HabitsFragment.newInstance(Type.GOOD),
+        HabitsFragment.newInstance(Type.BAD)
     )
-
-
 
 
     override fun onCreateView(
@@ -47,7 +45,6 @@ class MainFragment : Fragment() {
 
         return binding.root
     }
-
 
 
     private fun init() {
