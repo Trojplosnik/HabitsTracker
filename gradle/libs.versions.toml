@@ -1,7 +1,7 @@
 [versions]
 agp = "8.3.2"
 fragmentKtx = "1.7.1"
-hiltCompiler = "2.44"
+javaxInject = "1"
 kotlin = "1.9.10"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -20,9 +20,11 @@ retrofit = "2.9.0"
 roomCompiler = "2.6.1"
 roomCommon = "2.6.1"
 roomKtx = "2.6.1"
-ksp = "1.9.23-1.0.20"
+#ksp = "1.9.23-1.0.20"
+kapt = "2.0.0"
 squareupLoggingInterceptor = "4.9.0"
-hilt = "2.44"
+hilt = "2.51.1"
+jetbrainsKotlinJvm = "1.9.23"
 
 
 [libraries]
@@ -30,8 +32,9 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltCompiler" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -52,6 +55,10 @@ squareup-logging-interceptor = { module = "com.squareup.okhttp3:logging-intercep
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize"}
-ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
+kapt = {id = "org.jetbrains.kotlin.kapt", version.ref = "kapt"}
+#ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
 hilt = {id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+
 

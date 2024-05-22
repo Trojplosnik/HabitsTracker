@@ -3,11 +3,14 @@ package com.example.habitstracker.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
+import com.example.habitstracker.domain.entities.Frequency
 import com.example.habitstracker.domain.entities.Habit
 import com.example.habitstracker.domain.entities.Priority
 import com.example.habitstracker.domain.entities.Type
-import com.example.habitstracker.domain.repositorys.IHabitsRepository
+import com.example.habitstracker.domain.usecases.AddHabitUseCase
+import com.example.habitstracker.domain.usecases.GetHabitUseCase
+import com.example.habitstracker.domain.usecases.UpdateHabitUseCase
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,10 +18,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
+@HiltViewModel
+class EditEddViewModel @Inject constructor(
+    private val getHabitUseCase: GetHabitUseCase,
+    private val updateHabitUseCase: UpdateHabitUseCase,
+    private val addHabitUseCase: AddHabitUseCase
+) : ViewModel() {
 
-class EditEddViewModel (private val model: IHabitsRepository) : ViewModel() {
+
     data class EditEddUiState(
         val showToast: Boolean = false,
         val isSaving: Boolean = false,
@@ -45,11 +55,22 @@ class EditEddViewModel (private val model: IHabitsRepository) : ViewModel() {
     }
 
     fun setAmount(newAmount: String) {
-        currentHabit = currentHabit.copy(amount = newAmount.toInt())
+        currentHabit = if (newAmount.isNotBlank())
+             currentHabit.copy(amount = newAmount.toInt())
+        else
+            currentHabit.copy(amount = -1)
     }
 
     fun setFrequency(newFrequency: String) {
-        currentHabit = currentHabit.copy(frequency = newFrequency.toInt())
+        currentHabit = currentHabit.copy(
+            frequency = when (newFrequency.lowercase(Locale.ROOT)) {
+                "day" -> Frequency.DAY
+                "week" -> Frequency.WEEK
+                "month" -> Frequency.MONTH
+                "year" -> Frequency.YEAR
+                else -> Frequency.DAY
+            }
+        )
     }
 
     fun setPriority(newPriority: Priority) {
@@ -67,7 +88,7 @@ class EditEddViewModel (private val model: IHabitsRepository) : ViewModel() {
 
     fun getHabitById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            currentHabit = model.getHabitById(id)
+            currentHabit = getHabitUseCase.execute(id)
             _uiState.update { state ->
                 state.copy(habitLoaded = true)
             }
@@ -75,10 +96,8 @@ class EditEddViewModel (private val model: IHabitsRepository) : ViewModel() {
     }
 
     private fun checkInputIsEmpty() = currentHabit.name.isEmpty() ||
-                                        currentHabit.name.isEmpty() ||
-                                        currentHabit.name.isEmpty() ||
-                                        currentHabit.type == Type.NOT_SELECTED
-
+            currentHabit.amount < 0 ||
+            currentHabit.type == Type.NOT_SELECTED
 
 
     fun sendToDataBase() {
@@ -92,16 +111,18 @@ class EditEddViewModel (private val model: IHabitsRepository) : ViewModel() {
             }
             viewModelScope.launch(Dispatchers.IO) {
                 if (currentHabit.id != 0) {
-                    model.updateHabit(currentHabit)
+                    updateHabitUseCase.execute(currentHabit)
                 } else
-                    model.addHabit(currentHabit)
+                    addHabitUseCase.execute(currentHabit)
             }
         }
     }
 
     fun dismissState() {
         _uiState.update { state ->
-            state.copy()
+            state.copy(showToast =false,
+            isSaving= false,
+            habitLoaded = false)
         }
     }
 

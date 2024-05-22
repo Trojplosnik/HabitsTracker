@@ -13,7 +13,7 @@ import com.example.habitstracker.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
@@ -21,13 +21,9 @@ class MainActivity : AppCompatActivity() {
         get() = _binding ?: throw IllegalStateException("ActivityMainBinding is null")
 
 
-
-
     private var _appBarConfiguration: AppBarConfiguration? = null
     private val appBarConfiguration
         get() = _appBarConfiguration ?: throw IllegalStateException("AppBarConfiguration is null")
-
-
 
 
     override fun onSupportNavigateUp(): Boolean {

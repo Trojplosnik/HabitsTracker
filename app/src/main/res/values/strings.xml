@@ -12,6 +12,10 @@
     <string name="type">Type:</string>
     <string name="good">Good</string>
     <string name="bad">Bad</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
     <string name="priority">Priority:</string>
     <string name="current_color">Current color</string>
     <string name="separator" translatable="false">/</string>
@@ -22,7 +26,6 @@
     </string-array>
     <string name="def_name">Habit</string>
     <string name="def_desc">An unimportant good habit</string>
-    <string name="def_Frequency">Day</string>
     <string name="def_Type">Not selected</string>
     <string name="toast_fill_fields">To save the habit, fill in all required fields</string>
     <string name="menu">Menu</string>
@@ -32,5 +35,6 @@
     <string name="filter">Filter</string>
     <string name="sorting">Sorting</string>
     <string name="sorting_desc">by amount</string>
+    <string name="done">Done</string>
 
 </resources>

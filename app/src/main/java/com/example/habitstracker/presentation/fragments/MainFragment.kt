@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.domain.Constants
 import com.example.habitstracker.R
-import com.example.habitstracker.domain.adapters.ViewPaperAdapter
+import com.example.habitstracker.presentation.adapters.ViewPaperAdapter
 import com.example.habitstracker.databinding.FragmentMainBinding
 import com.example.habitstracker.domain.entities.Type
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
 
@@ -24,7 +24,6 @@ class MainFragment : Fragment() {
         get() = _binding ?: throw IllegalStateException("FragmentMainBinding is null")
 
     private val tabName = arrayOf(
-
         Constants.KEY_HABIT_STATE_GOOD,
         Constants.KEY_HABIT_STATE_BAD
     )
