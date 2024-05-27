@@ -1,4 +1,4 @@
-package com.example.habitstracker.domain.converters
+package com.example.habitstracker.data.converters
 
 
 import androidx.room.TypeConverter

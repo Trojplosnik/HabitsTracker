@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.parcelize)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
 
@@ -69,33 +69,20 @@ dependencies {
     //Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(project(":domain"))
 
     //Modules
     implementation(project(":data"))
+    implementation(project(":domain"))
 
 
-    //Room
-    kapt(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
 
     //Livedata
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    //Retrofit
-    implementation(libs.retrofit)
-
-    //Gson
-    implementation (libs.converter.gson)
-
-    //Okhttp
-    implementation (libs.okhttp)
-    implementation (libs.squareup.logging.interceptor)
 
     //Hilt
     implementation (libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.fragment.ktx)
 

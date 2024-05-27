@@ -4,7 +4,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -50,7 +50,7 @@ dependencies {
     implementation(project(":domain"))
 
     //Room
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
 
@@ -65,7 +65,11 @@ dependencies {
     implementation (libs.okhttp)
     implementation (libs.squareup.logging.interceptor)
 
-    implementation (libs.javax.inject)
+    //hilt
+    implementation (libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.androidx.fragment.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

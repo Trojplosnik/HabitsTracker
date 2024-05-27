@@ -5,7 +5,7 @@
     <string name="hint_habit_name">Name</string>
     <string name="hint_habit_desc">Description</string>
     <string name="hint_amount">Amount</string>
-    <string name="hint_frequency">Frequency</string>
+    <string name="frequency">Frequency:</string>
     <string name="close">Close</string>
     <string name="open">Open</string>
     <string name="save">Save</string>
@@ -23,6 +23,12 @@
         <item>Not selected</item>
         <item>Important</item>
         <item>Not important</item>
+    </string-array>
+    <string-array name="habit_frequency">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
     </string-array>
     <string name="def_name">Habit</string>
     <string name="def_desc">An unimportant good habit</string>

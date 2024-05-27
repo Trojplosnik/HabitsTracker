@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitsBinding
-import com.example.habitstracker.domain.Constants.KEY_EXTRA_EDIT_HABIT
+import com.example.habitstracker.presentation.Constants
 import com.example.habitstracker.domain.entities.Habit
 import com.example.habitstracker.presentation.adapters.HabitsAdapter
 import com.example.habitstracker.domain.entities.Type
@@ -61,7 +61,7 @@ class HabitsFragment : Fragment() {
 
     private fun navigateToEditAdd(habitId: Int) {
         val bundle = Bundle()
-        bundle.putInt(KEY_EXTRA_EDIT_HABIT, habitId)
+        bundle.putInt(Constants.KEY_EXTRA_EDIT_HABIT, habitId)
         findNavController().navigate(R.id.action_mainFragment_to_editAddFragment, bundle)
     }
 

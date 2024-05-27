@@ -1,11 +1,11 @@
-package com.example.habitstracker.domain.entities
+package com.example.habitstracker.data.remote.entities
 
 import androidx.room.TypeConverters
-import com.example.habitstracker.domain.converters.ListConverter
+import com.example.habitstracker.data.converters.ListConverter
 import com.google.gson.annotations.SerializedName
 
 @TypeConverters(ListConverter::class)
-class HabitDto (
+data class HabitDto (
     @SerializedName("count")
     val count: Int,
     @SerializedName("date")

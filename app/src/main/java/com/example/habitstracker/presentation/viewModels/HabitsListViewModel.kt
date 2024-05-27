@@ -55,14 +55,17 @@ class HabitsListViewModel @Inject constructor(
 
     init {
         setHabits()
+    }
+
+    fun synchronizeWithRemote() {
         viewModelScope.launch(Dispatchers.IO) {
-            synchronizeWithRemoteUseCase.execute()
+            synchronizeWithRemoteUseCase()
         }
     }
 
     fun setHabits() {
         viewModelScope.launch(Dispatchers.IO) {
-            getAllHabitsUseCase.execute().collect { habitsList ->
+            getAllHabitsUseCase().collect { habitsList ->
                 _habits.postValue(habitsList)
             }
         }
@@ -72,7 +75,7 @@ class HabitsListViewModel @Inject constructor(
     fun searchDatabase(query: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             if (query != null) {
-                _habits.postValue(searchHabitsUseCase.execute(query))
+                _habits.postValue(searchHabitsUseCase(query))
             }
         }
     }
@@ -80,7 +83,7 @@ class HabitsListViewModel @Inject constructor(
     fun sortDatabase(isDesc: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
-                _habits.value = sortHabitsUseCase.execute(isDesc)
+                _habits.value = sortHabitsUseCase(isDesc)
             }
         }
 
@@ -89,7 +92,7 @@ class HabitsListViewModel @Inject constructor(
 
     fun deleteHabit(habit: Habit) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteHabitUseCase.execute(habit)
+            deleteHabitUseCase(habit)
         }
     }
 
@@ -130,7 +133,7 @@ class HabitsListViewModel @Inject constructor(
             }
         }
         viewModelScope.launch(Dispatchers.IO) {
-            doneHabitUseCase.execute(habit)
+            doneHabitUseCase(habit)
         }
     }
 

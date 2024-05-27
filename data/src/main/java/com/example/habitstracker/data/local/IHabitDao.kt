@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.habitstracker.domain.entities.Habit
 import kotlinx.coroutines.flow.Flow
 
 
@@ -13,32 +12,32 @@ import kotlinx.coroutines.flow.Flow
 interface IHabitDao {
 
     @Query("SELECT * FROM habits_table")
-    fun getAll(): Flow<List<Habit>>
+    fun getAll(): Flow<List<HabitEntity>>
 
 
     @Query("SELECT * FROM habits_table WHERE id = :id")
-    fun getHabitById(id: Int): Habit
+    fun getHabitById(id: Int): HabitEntity
 
 
 
     @Query("SELECT * FROM habits_table WHERE name LIKE '%' || :query || '%'")
-    fun searchDatabase(query: String): List<Habit>
+    fun searchDatabase(query: String): List<HabitEntity>
 
 
     @Query("SELECT * FROM habits_table ORDER BY amount ASC")
-    fun sortDatabaseASC(): List<Habit>
+    fun sortDatabaseASC(): List<HabitEntity>
 
 
     @Query("SELECT * FROM habits_table ORDER BY amount DESC")
-    fun sortDatabaseDESC(): List<Habit>
+    fun sortDatabaseDESC(): List<HabitEntity>
 
 
     @Insert
-    suspend fun addHabit(habit: Habit)
+    suspend fun addHabit(habit: HabitEntity)
 
 
     @Delete
-    suspend fun deleteHabit(habit: Habit)
+    suspend fun deleteHabit(habit: HabitEntity)
 
 
     @Query("DELETE FROM habits_table")
@@ -46,6 +45,6 @@ interface IHabitDao {
 
 
     @Update
-    suspend fun updateHabit(habit: Habit)
+    suspend fun updateHabit(habit: HabitEntity)
 
 }

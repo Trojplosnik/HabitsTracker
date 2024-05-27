@@ -32,7 +32,8 @@ class EditEddViewModel @Inject constructor(
     data class EditEddUiState(
         val showToast: Boolean = false,
         val isSaving: Boolean = false,
-        val habitLoaded: Boolean = false
+        val habitLoaded: Boolean = false,
+        val changeColor: Boolean = false
     )
 
 
@@ -56,20 +57,14 @@ class EditEddViewModel @Inject constructor(
 
     fun setAmount(newAmount: String) {
         currentHabit = if (newAmount.isNotBlank())
-             currentHabit.copy(amount = newAmount.toInt())
+            currentHabit.copy(amount = newAmount.toInt())
         else
             currentHabit.copy(amount = -1)
     }
 
-    fun setFrequency(newFrequency: String) {
+    fun setFrequency(newFrequency: Frequency) {
         currentHabit = currentHabit.copy(
-            frequency = when (newFrequency.lowercase(Locale.ROOT)) {
-                "day" -> Frequency.DAY
-                "week" -> Frequency.WEEK
-                "month" -> Frequency.MONTH
-                "year" -> Frequency.YEAR
-                else -> Frequency.DAY
-            }
+            frequency = newFrequency
         )
     }
 
@@ -83,12 +78,15 @@ class EditEddViewModel @Inject constructor(
 
     fun setColor(newColor: Int) {
         currentHabit = currentHabit.copy(color = newColor)
+        _uiState.update { state ->
+            state.copy(changeColor = true)
+        }
     }
 
 
     fun getHabitById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            currentHabit = getHabitUseCase.execute(id)
+            currentHabit = getHabitUseCase(id)
             _uiState.update { state ->
                 state.copy(habitLoaded = true)
             }
@@ -111,18 +109,21 @@ class EditEddViewModel @Inject constructor(
             }
             viewModelScope.launch(Dispatchers.IO) {
                 if (currentHabit.id != 0) {
-                    updateHabitUseCase.execute(currentHabit)
+                    updateHabitUseCase(currentHabit)
                 } else
-                    addHabitUseCase.execute(currentHabit)
+                    addHabitUseCase(currentHabit)
             }
         }
     }
 
     fun dismissState() {
         _uiState.update { state ->
-            state.copy(showToast =false,
-            isSaving= false,
-            habitLoaded = false)
+            state.copy(
+                showToast = false,
+                isSaving = false,
+                habitLoaded = false,
+                changeColor = false
+            )
         }
     }
 

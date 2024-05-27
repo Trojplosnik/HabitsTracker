@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.habitstracker.domain.Constants
+import com.example.habitstracker.presentation.Constants
 import com.example.habitstracker.R
 import com.example.habitstracker.presentation.adapters.ViewPaperAdapter
 import com.example.habitstracker.databinding.FragmentMainBinding

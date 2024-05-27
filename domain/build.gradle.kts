@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.parcelize)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -36,15 +36,13 @@ android {
 
 dependencies {
 
-    //Room
-    kapt(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
+    implementation (libs.kotlinx.coroutines.android)
+
+    //hilt
+    implementation (libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     implementation (libs.javax.inject)
-
-    //Gson
-    implementation (libs.converter.gson)
 
 
     testImplementation(libs.junit)

@@ -104,7 +104,7 @@
                 android:id="@+id/tvFrequency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hint_frequency"
+                android:text="@string/frequency"
                 android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@+id/tvSeparator"
                 app:layout_constraintTop_toTopOf="@+id/tvSeparator" />

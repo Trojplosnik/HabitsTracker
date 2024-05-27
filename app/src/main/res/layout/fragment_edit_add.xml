@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.EditAddFragment"
-    android:padding="24dp">
+    android:padding="24dp"
+    tools:context=".presentation.fragments.EditAddFragment">
 
     <EditText
         android:id="@+id/etHabitName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="0dp"
         android:layout_height="@dimen/et_height"
         android:background="@drawable/custom_input"
         android:hint="@string/hint_habit_name"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:maxLength="18"
+        android:maxLength="13"
         android:paddingStart="@dimen/def_padding"
         android:paddingEnd="@dimen/def_padding"
-        android:textSize="@dimen/def_text_size" />
+        android:textSize="@dimen/def_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etHabitDesc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etHabitName"
         android:layout_width="0dp"
         android:layout_height="@dimen/et_height"
         android:layout_marginTop="@dimen/def_margin"
@@ -39,18 +35,18 @@
         android:maxLength="160"
         android:paddingStart="@dimen/def_padding"
         android:paddingEnd="@dimen/def_padding"
-        android:textSize="@dimen/def_text_size" />
+        android:textSize="@dimen/def_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etHabitName" />
 
 
     <EditText
         android:id="@+id/etAmount"
-        app:layout_constraintEnd_toStartOf="@+id/etFrequency"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etHabitDesc"
+
         android:layout_width="0dp"
         android:layout_height="@dimen/et_height"
         android:layout_marginTop="@dimen/def_margin"
-        android:layout_marginEnd="18dp"
         android:background="@drawable/custom_input"
         android:hint="@string/hint_amount"
         android:importantForAutofill="no"
@@ -58,70 +54,78 @@
         android:maxLength="6"
         android:paddingStart="@dimen/def_padding"
         android:paddingEnd="@dimen/def_padding"
-        android:textSize="@dimen/def_text_size" />
+        android:textSize="@dimen/def_text_size"
+        app:layout_constraintEnd_toStartOf="@+id/glEndVertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etHabitDesc" />
 
 
-    <EditText
-        android:id="@+id/etFrequency"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etAmount"
-        app:layout_constraintTop_toBottomOf="@+id/etHabitDesc"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/et_height"
+    <TextView
+        android:id="@+id/tvFrequency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/def_margin"
-        android:background="@drawable/custom_input"
-        android:hint="@string/hint_frequency"
-        android:text="@string/day"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:maxLength="12"
-        android:paddingStart="@dimen/def_padding"
-        android:paddingEnd="@dimen/def_padding"
-        android:textSize="@dimen/def_text_size" />
+        android:text="@string/frequency"
+        android:textSize="@dimen/def_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
+        app:layout_constraintTop_toBottomOf="@+id/spnPriority" />
+
+    <Spinner
+        android:id="@+id/spnFrequency"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:entries="@array/habit_frequency"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
+        app:layout_constraintTop_toBottomOf="@+id/tvFrequency" />
 
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glEndVertical"
-        app:layout_constraintGuide_percent="0.5"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glTopHorizontal"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="263dp" />
+        app:layout_constraintGuide_percent="0.4" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glBottomHorizontal"
-        app:layout_constraintGuide_percent="0.7"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
 
     <TextView
         android:id="@+id/tvTypeTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/glTopHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/def_margin"
         android:text="@string/type"
         android:textSize="@dimen/def_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/rGrpType"
+        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
+        app:layout_constraintTop_toBottomOf="@+id/etHabitDesc" />
 
 
     <RadioGroup
         android:id="@+id/rGrpType"
-        app:layout_constraintEnd_toStartOf="@+id/glEndVertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTypeTitle"
-
-
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etAmount"
+        app:layout_constraintTop_toBottomOf="@+id/tvTypeTitle">
 
         <RadioButton
             android:id="@+id/rBtnGood"
@@ -133,7 +137,7 @@
 
         <RadioButton
             android:id="@+id/rBtnBad"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/bad"
@@ -143,53 +147,56 @@
 
     <TextView
         android:id="@+id/tvPriority"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rGrpType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/priority"
         android:textSize="@dimen/def_text_size"
-        android:textStyle="bold" />
+        android:layout_marginTop="@dimen/def_margin"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
+        app:layout_constraintTop_toTopOf="@+id/glTopHorizontal" />
 
     <Spinner
-        android:id="@+id/spnHabitPriority"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPriority"
+        android:id="@+id/spnPriority"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:entries="@array/habit_priority" />
+        android:entries="@array/habit_priority"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
+        app:layout_constraintTop_toBottomOf="@+id/tvPriority" />
 
     <TextView
         android:id="@+id/tvCurrentColor"
-        app:layout_constraintBottom_toTopOf="@+id/cvCurrentColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
-        app:layout_constraintTop_toTopOf="@+id/glTopHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/current_color"
         android:textSize="@dimen/def_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+
+        app:layout_constraintEnd_toStartOf="@+id/glEndVertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/glTopHorizontal" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvCurrentColor"
+        android:layout_width="128dp"
+        android:layout_height="96dp"
         app:cardBackgroundColor="@color/light_green"
         app:cardCornerRadius="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/glBottomHorizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
-        app:layout_constraintTop_toTopOf="@+id/glTopHorizontal"
-        android:layout_width="128dp"
-        android:layout_height="96dp" />
+
+        app:layout_constraintEnd_toStartOf="@+id/glEndVertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentColor" />
 
     <HorizontalScrollView
         android:id="@+id/svColors"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/glBottomHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cp_desc">
+        android:contentDescription="@string/cp_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/glBottomHorizontal">
 
         <LinearLayout
             android:id="@+id/linL"
@@ -202,153 +209,153 @@
 
             <View
                 android:id="@+id/v1"
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
                 android:id="@+id/v2"
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
 
             <View
                 android:id="@+id/v3"
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
                 android:id="@+id/v4"
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
 
             <View
                 android:id="@+id/v5"
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
 
             <View
                 android:id="@+id/v6"
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                app:cardCornerRadius="@dimen/def_corner_radius"
                 android:layout_width="@dimen/v_color_size"
                 android:layout_height="@dimen/v_color_size"
-                android:background="@drawable/custom_color_blob" />
+                android:background="@drawable/custom_color_blob"
+                app:cardCornerRadius="@dimen/def_corner_radius" />
 
 
         </LinearLayout>
@@ -357,24 +364,24 @@
 
     <Button
         android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_height"
+        android:backgroundTint="@color/green"
+        android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnClose"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svColors"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/btn_height"
-        android:backgroundTint="@color/green"
-        android:text="@string/save" />
+        app:layout_constraintTop_toBottomOf="@+id/svColors" />
 
     <Button
         android:id="@+id/btnClose"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnSave"
-        app:layout_constraintTop_toBottomOf="@+id/svColors"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/btn_height"
         android:backgroundTint="@color/green"
-        android:text="@string/close" />
+        android:text="@string/close"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSave"
+        app:layout_constraintTop_toBottomOf="@+id/svColors" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

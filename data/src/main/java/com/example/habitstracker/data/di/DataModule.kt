@@ -1,4 +1,4 @@
-package com.example.habitstracker.di
+package com.example.habitstracker.data.di
 
 import android.content.Context
 import androidx.room.Room
@@ -7,8 +7,8 @@ import com.example.habitstracker.data.local.IHabitDao
 import com.example.habitstracker.data.remote.IHabitService
 import com.example.habitstracker.data.remote.RemoteDataSource
 import com.example.habitstracker.data.repositories.HabitsRepositoryImpl
-import com.example.habitstracker.domain.Constants.BASE_URL
-import com.example.habitstracker.domain.converters.HabitTransportConverter
+import com.example.habitstracker.data.Constants.BASE_URL
+import com.example.habitstracker.data.converters.DateTimeConverter
 import com.example.habitstracker.domain.repositories.IHabitsRepository
 import dagger.Module
 import dagger.Provides
@@ -30,27 +30,30 @@ class DataModule {
     fun providesHabitDao(database: HabitDatabase): IHabitDao = database.habitDao()
 
 
-    @Singleton
-    @Provides
-    fun providesHabitTransportConverter(): HabitTransportConverter = HabitTransportConverter()
-
 
     @Singleton
     @Provides
     fun providesRemoteDataSource(habitService: IHabitService): RemoteDataSource =
         RemoteDataSource(habitService)
 
+
+    @Singleton
+    @Provides
+    fun providesDateTimeConverter(): DateTimeConverter = DateTimeConverter()
+
+
     @Singleton
     @Provides
     fun providesHabitsRepository(
         remoteDataSource: RemoteDataSource,
         habitsDao: IHabitDao,
-        habitTransportConverter: HabitTransportConverter
+        dateTimeConverter: DateTimeConverter
     ): IHabitsRepository = HabitsRepositoryImpl(
         remoteDataSource = remoteDataSource,
         habitsDao = habitsDao,
-        habitTransportConverter = habitTransportConverter
+        dateTimeConverter = dateTimeConverter
     )
+
 
     @Singleton
     @Provides

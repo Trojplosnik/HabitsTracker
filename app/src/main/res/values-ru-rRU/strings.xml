@@ -6,7 +6,7 @@
     <string name="hint_habit_name">Название</string>
     <string name="hint_habit_desc">Описание</string>
     <string name="hint_amount">Количество</string>
-    <string name="hint_frequency">Периодичность</string>
+    <string name="frequency">Периодичность</string>
     <string name="close">Закрыть</string>
     <string name="open">Открыть</string>
     <string name="save">Сохранить</string>
@@ -16,12 +16,19 @@
     <string name="day">День</string>
     <string name="week">Неделю</string>
     <string name="month">Месяц</string>
+    <string name="year">Год</string>
     <string name="priority">Приоритет:</string>
     <string name="current_color">Текущий цвет</string>
     <string-array name="habit_priority">
         <item>Не выбрано</item>
         <item>Важная</item>
         <item>Не важная</item>
+    </string-array>
+    <string-array name="habit_frequency">
+        <item>День</item>
+        <item>Неделю</item>
+        <item>Месяц</item>
+        <item>Год</item>
     </string-array>
     <string name="def_name">Привычка</string>
     <string name="def_desc">Не очень важная хорошая привычка</string>
@@ -35,5 +42,4 @@
     <string name="sorting">Сортитровка</string>
     <string name="sorting_desc">по числу повторений</string>
     <string name="done">Выполнено</string>
-    <string name="year">Год</string>
 </resources>

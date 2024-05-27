@@ -4,5 +4,5 @@ import com.example.habitstracker.domain.repositories.IHabitsRepository
 import javax.inject.Inject
 
 class GetAllHabitsUseCase @Inject constructor(private val repository: IHabitsRepository) {
-    fun execute() = repository.getAllHabits()
+    operator fun invoke() = repository.getAllHabits()
 }

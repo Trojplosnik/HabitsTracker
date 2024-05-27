@@ -18,7 +18,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.R
+import com.example.habitstracker.presentation.Constants
 import com.example.habitstracker.databinding.FragmentEditAddBinding
+import com.example.habitstracker.domain.entities.Frequency
 import com.example.habitstracker.domain.entities.Habit
 import com.example.habitstracker.domain.entities.Priority
 import com.example.habitstracker.domain.entities.Type
@@ -63,7 +65,10 @@ class EditAddFragment : Fragment() {
                         viewModel.dismissState()
                         findNavController().navigate(R.id.action_editAddFragment_to_mainFragment)
                     }
-
+                }
+                if (uiState.changeColor) {
+                    binding.cvCurrentColor.setCardBackgroundColor(viewModel.getCurrentHabit().color)
+                    viewModel.dismissState()
                 }
             }
         }
@@ -77,7 +82,8 @@ class EditAddFragment : Fragment() {
     private fun setColorPickerConfig() {
         with(binding)
         {
-            linL?.doOnLayout { layout ->
+            cvCurrentColor.setCardBackgroundColor(viewModel.getCurrentHabit().color)
+            linL.doOnLayout { layout ->
                 val bitmap = layout.background.toBitmap(
                     layout.measuredWidth,
                     layout.measuredHeight, Bitmap.Config.ARGB_8888
@@ -88,7 +94,6 @@ class EditAddFragment : Fragment() {
                         (child.y + child.height / 2).toInt()
                     )
                     child.setOnClickListener {
-                        cvCurrentColor.setCardBackgroundColor(color)
                         viewModel.setColor(color)
                     }
                 }
@@ -102,16 +107,31 @@ class EditAddFragment : Fragment() {
             etHabitName.doAfterTextChanged { viewModel.setName(it.toString()) }
             etHabitDesc.doAfterTextChanged { viewModel.setDescription(it.toString()) }
             etAmount.doAfterTextChanged { viewModel.setAmount(it.toString()) }
-            etFrequency.doAfterTextChanged { viewModel.setFrequency(it.toString()) }
             etHabitName.doAfterTextChanged { viewModel.setName(it.toString()) }
+
 
             rGrpType.setOnCheckedChangeListener { _, _ ->
                 if (rBtnBad.isChecked) viewModel.setType(Type.BAD)
                 else if (rBtnGood.isChecked) viewModel.setType(Type.GOOD)
             }
 
+            spnFrequency.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.setFrequency(Frequency.entries[position])
+                }
 
-            spnHabitPriority.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    viewModel.setFrequency(Frequency.entries[0])
+                }
+            }
+
+
+            spnPriority.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
                     view: View?,
@@ -134,7 +154,6 @@ class EditAddFragment : Fragment() {
 
         setColorPickerConfig()
         setVMConfig()
-        viewModel.setColor(binding.cvCurrentColor.cardBackgroundColor.defaultColor)
         with(binding) {
             btnSave.setOnClickListener {
                 viewModel.sendToDataBase()
@@ -150,9 +169,9 @@ class EditAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(com.example.habitstracker.domain.Constants.KEY_EXTRA_EDIT_HABIT)) {
+            if (it.containsKey(Constants.KEY_EXTRA_EDIT_HABIT)) {
                 val habitId =
-                    it.getInt(com.example.habitstracker.domain.Constants.KEY_EXTRA_EDIT_HABIT, 0)
+                    it.getInt(Constants.KEY_EXTRA_EDIT_HABIT, 0)
 
                 if (habitId > 0) {
                     viewModel.getHabitById(habitId)
@@ -167,8 +186,8 @@ class EditAddFragment : Fragment() {
                 etHabitName.setText(name)
                 etHabitDesc.setText(description)
                 etAmount.setText(amount.toString())
-                etFrequency.setText(frequency.toString())
-                spnHabitPriority.setSelection(priority.ordinal)
+                spnFrequency.setSelection(frequency.ordinal)
+                spnPriority.setSelection(priority.ordinal)
                 when (type) {
                     Type.BAD -> rGrpType.check(rBtnBad.id)
                     Type.GOOD -> rGrpType.check(rBtnGood.id)

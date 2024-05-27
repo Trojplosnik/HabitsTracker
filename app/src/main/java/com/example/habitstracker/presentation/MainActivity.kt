@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.bringToFront()
 
         setNavController()
+
     }
 
 

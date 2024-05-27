@@ -6,5 +6,5 @@ import javax.inject.Inject
 class SynchronizeWithRemoteUseCase @Inject constructor(private val repository: IHabitsRepository)
 {
 
-    suspend fun execute() = repository.synchronizeWithRemote()
+    suspend operator fun invoke() = repository.synchronizeWithRemote()
 }
