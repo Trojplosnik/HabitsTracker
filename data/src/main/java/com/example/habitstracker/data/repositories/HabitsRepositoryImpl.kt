@@ -9,7 +9,6 @@ import com.example.habitstracker.data.remote.RemoteDataSource
 import com.example.habitstracker.data.converters.fromEntityList
 import com.example.habitstracker.data.converters.toEntity
 import com.example.habitstracker.data.converters.toTransport
-import com.example.habitstracker.data.local.HabitEntity
 import com.example.habitstracker.data.remote.entities.DoneHabit
 import com.example.habitstracker.data.remote.entities.UidHabit
 import com.example.habitstracker.domain.entities.Habit
@@ -57,7 +56,7 @@ class HabitsRepositoryImpl @Inject constructor(
     override suspend fun addHabit(habit: Habit) {
         try {
             val habitEntity = habit.toEntity()
-            Log.d("add", habit.toString())
+//            Log.d("add", habit.toString())
             habitsDao.addHabit(habitEntity)
             val response = remoteDataSource.putHabit(habitEntity.toTransport())
             habitsDao.updateHabit(

@@ -7,7 +7,6 @@ import com.example.habitstracker.data.remote.entities.DoneHabit
 import com.example.habitstracker.data.remote.entities.HabitDto
 import com.example.habitstracker.data.remote.entities.UidHabit
 import retrofit2.HttpException
-import retrofit2.Response
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(private val habitService: IHabitService) {
@@ -32,7 +31,7 @@ class RemoteDataSource @Inject constructor(private val habitService: IHabitServi
     }
 
     suspend fun putHabit(body: HabitDto): UidHabit {
-        Log.d("add", body.toString())
+//        Log.d("add", body.toString())
         return habitService.putHabit(authorization = BuildConfig.API_TOKEN, body = body)
     }
 
