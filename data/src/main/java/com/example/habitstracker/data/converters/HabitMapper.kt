@@ -20,7 +20,7 @@ fun Habit.toTransport(): HabitDto = HabitDto(
         color = this.color
     )
 
-fun HabitDto.fromTransport(): Habit = Habit(
+fun HabitDto.fromTransport(): HabitEntity = HabitEntity(
         priority = Priority.entries[this.priority],
         type = Type.entries[this.type],
         name = this.title,
