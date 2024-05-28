@@ -15,6 +15,5 @@ data class Habit(
     val color: Int = Constants.DEF_COLOR,
     val date: Int = 0,
     val uid: String = "",
-    val doneDates: MutableList<Int> = emptyList<Int>().toMutableList(),
-    val onRemoteDatabase: Boolean = false
+    val doneDates: MutableList<Int> = emptyList<Int>().toMutableList()
 ): Parcelable

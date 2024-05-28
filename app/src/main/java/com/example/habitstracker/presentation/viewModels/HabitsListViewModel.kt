@@ -55,13 +55,11 @@ class HabitsListViewModel @Inject constructor(
 
     init {
         setHabits()
-    }
-
-    fun synchronizeWithRemote() {
         viewModelScope.launch(Dispatchers.IO) {
             synchronizeWithRemoteUseCase()
         }
     }
+
 
     fun setHabits() {
         viewModelScope.launch(Dispatchers.IO) {

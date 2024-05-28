@@ -15,13 +15,22 @@ import retrofit2.http.PUT
 interface IHabitService {
     @GET("habit")
     suspend fun getHabits(@Header(Constants.AUTH_HEADER) authorization: String): List<HabitDto>
+
     @PUT("habit")
-    suspend fun putHabit(@Header(Constants.AUTH_HEADER) authorization: String,
-                         @Body body: HabitDto): UidHabit
+    suspend fun putHabit(
+        @Header(Constants.AUTH_HEADER) authorization: String,
+        @Body body: HabitDto
+    ): UidHabit
+
     @HTTP(method = "DELETE", path = "habit", hasBody = true)
-    suspend fun deleteHabit(@Header(Constants.AUTH_HEADER) authorization: String,
-                            @Body body: UidHabit): String
+    suspend fun deleteHabit(
+        @Header(Constants.AUTH_HEADER) authorization: String,
+        @Body body: UidHabit
+    ): String
+
     @POST("habit")
-    suspend fun habitDone(@Header(Constants.AUTH_HEADER) authorization: String,
-                          @Body body: DoneHabit): String
+    suspend fun habitDone(
+        @Header(Constants.AUTH_HEADER) authorization: String,
+        @Body body: DoneHabit
+    ): String
 }

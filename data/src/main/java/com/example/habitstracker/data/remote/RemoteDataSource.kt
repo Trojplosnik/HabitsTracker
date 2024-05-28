@@ -31,7 +31,6 @@ class RemoteDataSource @Inject constructor(private val habitService: IHabitServi
     }
 
     suspend fun putHabit(body: HabitDto): UidHabit {
-//        Log.d("add", body.toString())
         return habitService.putHabit(authorization = BuildConfig.API_TOKEN, body = body)
     }
 

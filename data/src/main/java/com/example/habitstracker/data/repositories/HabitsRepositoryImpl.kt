@@ -9,10 +9,12 @@ import com.example.habitstracker.data.remote.RemoteDataSource
 import com.example.habitstracker.data.converters.fromEntityList
 import com.example.habitstracker.data.converters.toEntity
 import com.example.habitstracker.data.converters.toTransport
+import com.example.habitstracker.data.local.HabitEntity
 import com.example.habitstracker.data.remote.entities.DoneHabit
 import com.example.habitstracker.data.remote.entities.UidHabit
 import com.example.habitstracker.domain.entities.Habit
 import com.example.habitstracker.domain.repositories.IHabitsRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -27,20 +29,18 @@ class HabitsRepositoryImpl @Inject constructor(
 
     override suspend fun synchronizeWithRemote() {
         try {
-//            habitsDao.getAll().collect { localHabits ->
-//                localHabits.forEach { habitEntity: HabitEntity ->
-//                    if (!habitEntity.onRemoteDatabase) {
-//                        val habitDto = habitEntity.toTransport()
-//                        val response = remoteDataSource.putHabit(habitDto)
-//                        habitsDao.updateHabit(
-//                            habitEntity.copy(
-//                                onRemoteDatabase = true,
-//                                uid = response.uid
-//                            )
-//                        )
-//                    }
-//                }
-//            }
+            val localHabits = habitsDao.getAll().firstOrNull()
+            localHabits?.forEach { habitEntity: HabitEntity ->
+                if (habitEntity.uid.isEmpty()) {
+                    val habitDto = habitEntity.toTransport()
+                    val response = remoteDataSource.putHabit(habitDto)
+                    habitsDao.updateHabit(
+                        habitEntity.copy(
+                            uid = response.uid
+                        )
+                    )
+                }
+            }
         } catch (e: HttpException) {
             Log.e("Net", e.message())
         }
@@ -54,19 +54,19 @@ class HabitsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addHabit(habit: Habit) {
+        val habitEntity = habit.toEntity()
         try {
-            val habitEntity = habit.toEntity()
-//            Log.d("add", habit.toString())
-            habitsDao.addHabit(habitEntity)
             val response = remoteDataSource.putHabit(habitEntity.toTransport())
-            habitsDao.updateHabit(
+            habitsDao.addHabit(
                 habitEntity.copy(
-                    onRemoteDatabase = true,
                     uid = response.uid
                 )
             )
         } catch (e: HttpException) {
             Log.e("Net", e.message())
+            habitsDao.addHabit(
+                habitEntity
+            )
         }
     }
 

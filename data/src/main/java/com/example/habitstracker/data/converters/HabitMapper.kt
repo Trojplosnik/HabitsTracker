@@ -45,8 +45,7 @@ fun Habit.toEntity(): HabitEntity = HabitEntity(
         doneDates = this.doneDates.toMutableList(),
         uid = this.uid,
         color = this.color,
-        id = this.id,
-        onRemoteDatabase = onRemoteDatabase
+        id = this.id
 )
 
 
@@ -61,9 +60,9 @@ fun HabitEntity.fromEntity(): Habit = Habit(
         doneDates = this.doneDates.toMutableList(),
         uid = this.uid,
         color = this.color,
-        id = this.id,
-        onRemoteDatabase = onRemoteDatabase
+        id = this.id
 )
+
 
 fun HabitEntity.toTransport(): HabitDto = HabitDto(
         count = this.amount,
@@ -77,6 +76,7 @@ fun HabitEntity.toTransport(): HabitDto = HabitDto(
         uid = this.uid,
         color = this.color
 )
+
 
 
 fun List<HabitEntity>.fromEntityList(): List<Habit> = this.map { habitEntity -> habitEntity.fromEntity() }
