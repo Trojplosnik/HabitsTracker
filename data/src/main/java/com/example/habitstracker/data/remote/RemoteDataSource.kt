@@ -16,9 +16,11 @@ class RemoteDataSource @Inject constructor(private val habitService: IHabitServi
 
     suspend fun deleteHabit(body: UidHabit) {
         try {
-            habitService.deleteHabit(authorization = BuildConfig.API_TOKEN, body = body)
-        }catch (e: HttpException) {
-            Log.e("Net", e.message())
+            val r = habitService.deleteHabit(authorization = BuildConfig.API_TOKEN, body = body)
+            Log.d("net", r)
+        }catch (e: Exception) {
+            Log.e("Net", e.message.toString())
+            Log.d("net", e.message.toString())
         }
     }
 

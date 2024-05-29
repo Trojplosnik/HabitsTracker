@@ -71,7 +71,10 @@ dependencies {
 
     implementation(libs.androidx.fragment.ktx)
 
+
+    //test
+    testImplementation(libs.mockito.core)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

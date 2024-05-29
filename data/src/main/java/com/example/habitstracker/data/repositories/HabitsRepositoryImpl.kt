@@ -107,15 +107,12 @@ class HabitsRepositoryImpl @Inject constructor(
 
     override fun getHabitById(id: Int) = habitsDao.getHabitById(id).fromEntity()
 
-
     override fun searchDatabase(query: String) = habitsDao.searchDatabase(query).fromEntityList()
 
     override fun sortDatabaseASC() = habitsDao.sortDatabaseASC().fromEntityList()
 
     override fun sortDatabaseDESC() = habitsDao.sortDatabaseDESC().fromEntityList()
 
-
     override fun getAllHabits() = habitsDao.getAll().map { list -> list.fromEntityList() }
-
 
 }

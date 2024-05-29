@@ -1,6 +1,5 @@
 package com.example.habitstracker.presentation.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -80,9 +78,7 @@ class HabitsListViewModel @Inject constructor(
 
     fun sortDatabase(isDesc: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                _habits.value = sortHabitsUseCase(isDesc)
-            }
+                _habits.postValue(sortHabitsUseCase(isDesc))
         }
 
     }
@@ -97,7 +93,6 @@ class HabitsListViewModel @Inject constructor(
     fun doneHabit(habit: Habit) {
         val leftToDo = habit.amount - habit.doneDates.size - 1
         if (leftToDo > 0) {
-            Log.d("time", "${habit.doneDates} , ${habit.id}")
             when (habit.type) {
                 Type.GOOD -> _uiState.update { state ->
                     state.copy(
