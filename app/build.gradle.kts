@@ -90,8 +90,9 @@ dependencies {
     //test
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
-    implementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation (libs.androidx.core.testing)
+    androidTestImplementation (libs.androidx.core.testing)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

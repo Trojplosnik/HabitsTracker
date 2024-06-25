@@ -74,7 +74,6 @@ class HabitsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentHabitsBinding.inflate(inflater, container, false)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -93,20 +92,20 @@ class HabitsFragment : Fragment() {
         }
 
 
-
         with(binding) {
             rvHabitsRecycler.layoutManager = LinearLayoutManager(context)
             rvHabitsRecycler.adapter = adapter
             itemTouchHelper.attachToRecyclerView(rvHabitsRecycler)
 
 
-            viewModel.habits.observe(requireActivity()) { list ->
+            viewModel.habits.observe(getViewLifecycleOwner()) { list ->
                 adapter.submitList(list.filter { habit: Habit -> habit.type == type })
             }
         }
 
         return binding.root
     }
+
 
 
     companion object {

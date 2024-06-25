@@ -38,6 +38,7 @@
     <string name="habits">Habits</string>
     <string name="info">Info</string>
     <string name="info_content">An application that helps you keep track of your habits.</string>
+    <string name="add_edit_habit">Add/Edit habit</string>
     <string name="filter">Filter</string>
     <string name="sorting">Sorting</string>
     <string name="sorting_desc">by amount</string>

@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.ActivityMainBinding
@@ -38,9 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.navigationView.bringToFront()
-
         setNavController()
-
     }
 
 
@@ -48,11 +47,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentHolder) as NavHostFragment
         val navController = navHostFragment.navController
-
         _appBarConfiguration = AppBarConfiguration(
             navController.graph,
             binding.navigationDrawerLayout
         )
         binding.navigationView.setupWithNavController(navController)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 }

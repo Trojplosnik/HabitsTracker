@@ -42,4 +42,5 @@
     <string name="sorting">Сортитровка</string>
     <string name="sorting_desc">по числу повторений</string>
     <string name="done">Выполнено</string>
+    <string name="add_edit_habit">Добавить/Обновить привычку</string>
 </resources>

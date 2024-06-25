@@ -124,7 +124,7 @@
                 android:id="@+id/btnDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/gray"
+                android:backgroundTint="@color/turquoise"
                 android:text="@string/done"
                 android:textColor="@color/black"
                 android:textSize="@dimen/def_text_size"

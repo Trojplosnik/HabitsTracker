@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -168,14 +167,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/def_margin"
         android:contentDescription="@string/cp_desc"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/glCenterVertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etHabitDesc">
 
         <LinearLayout
+            android:id="@+id/linL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/linL"
             android:background="@drawable/sv_gradient"
             android:orientation="horizontal"
             android:padding="4dp">
@@ -233,7 +232,7 @@
                 app:cardCornerRadius="@dimen/def_corner_radius" />
 
             <View
-                android:layout_width="@dimen/v_color_size"
+                android:layout_width="66dp"
                 android:layout_height="@dimen/v_color_size"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/custom_color_blob"
@@ -343,9 +342,9 @@
         android:text="@string/current_color"
         android:textSize="@dimen/def_text_size"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/glCenterVertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svColors" />
+        app:layout_constraintEnd_toStartOf="@+id/glEndVertical"
+        app:layout_constraintStart_toStartOf="@+id/glCenterVertical"
+        app:layout_constraintTop_toBottomOf="@+id/spnFrequency" />
 
 
     <androidx.cardview.widget.CardView
@@ -354,39 +353,31 @@
         android:layout_height="64dp"
         app:cardBackgroundColor="@color/light_green"
         app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/btnSave"
-        app:layout_constraintHorizontal_bias="0.418"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/glEndVertical"
+        app:layout_constraintStart_toStartOf="@+id/glCenterVertical"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentColor" />
 
 
     <Button
+        android:layout_marginTop="@dimen/def_margin"
         android:id="@+id/btnClose"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/btn_height"
         android:backgroundTint="@color/green"
         android:text="@string/close"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/btnSave"
-        app:layout_constraintStart_toStartOf="@+id/glEndVertical"
-        app:layout_constraintTop_toBottomOf="@+id/svColors"
-        app:layout_constraintVertical_bias="0.285" />
+        app:layout_constraintTop_toBottomOf="@+id/spnPriority" />
 
     <Button
+        android:layout_marginTop="@dimen/def_margin"
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/btn_height"
         android:backgroundTint="@color/green"
         android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnClose"
-        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toEndOf="@+id/cvCurrentColor"
-        app:layout_constraintStart_toStartOf="@+id/glCenterVertical"
-        app:layout_constraintTop_toBottomOf="@+id/svColors"
-        app:layout_constraintVertical_bias="0.285" />
+        app:layout_constraintTop_toBottomOf="@+id/spnFrequency" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
