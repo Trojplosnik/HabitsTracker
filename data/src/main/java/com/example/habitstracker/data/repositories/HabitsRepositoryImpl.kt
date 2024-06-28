@@ -70,7 +70,7 @@ class HabitsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addHabit(habit: Habit) {
-        val habitEntity = habit.toEntity()
+        val habitEntity = habit.copy(date = dateTimeConverter.currentDateTimeToInt()).toEntity()
         try {
             val response = remoteDataSource.putHabit(habitEntity.toTransport())
             habitsDao.addHabit(

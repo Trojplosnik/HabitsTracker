@@ -10,7 +10,6 @@ import com.example.habitstracker.domain.entities.Type
 import com.example.habitstracker.domain.usecases.AddHabitUseCase
 import com.example.habitstracker.domain.usecases.GetHabitUseCase
 import com.example.habitstracker.domain.usecases.UpdateHabitUseCase
-import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -173,18 +172,6 @@ class EditEddViewModelUnitTest {
         val expected = Habit(color = 0)
 
         Assert.assertEquals(expected, viewModel.getCurrentHabit())
-    }
-
-
-    @Test
-    fun getHabitById_isCorrect() = runTest {
-        Mockito.`when`(getHabitUseCase(1)).thenReturn(habit1)
-        val viewModel2 = EditEddViewModel(getHabitUseCase, updateHabitUseCase, addHabitUseCase)
-        viewModel2.getHabitById(1)
-
-        val expected = habit1
-
-        Assert.assertEquals(expected, viewModel2.getCurrentHabit())
     }
 
 

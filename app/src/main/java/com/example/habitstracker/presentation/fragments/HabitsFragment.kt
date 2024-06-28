@@ -85,7 +85,7 @@ class HabitsFragment : Fragment() {
                         HabitsListViewModel.ToastState.GOOD_MORE -> "You are breathtaking!"
                         HabitsListViewModel.ToastState.BAD_MORE -> "Stop doing this!"
                     }
-                    Toast.makeText(activity, toastMsg, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, toastMsg, Toast.LENGTH_SHORT).show()
                     viewModel.dismissState()
                 }
             }
